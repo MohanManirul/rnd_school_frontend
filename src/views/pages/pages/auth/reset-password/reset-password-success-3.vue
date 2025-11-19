@@ -1,0 +1,36 @@
+<template>
+  <div class="account-page">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="row justify-content-center flex-fill">
+          <div class="col-md-4 mx-auto p-4">
+            <div class="mx-auto mb-5 text-center">
+              <img
+                src="@/assets/img/authentication/authentication-logo.svg"
+                class="img-fluid"
+                alt="Logo"
+              />
+            </div>
+            <div class="card">
+              <div class="card-body text-center">
+                <span class="avatar avatar-lg rounded-circle bg-success mb-3"
+                  ><i class="ti ti-check fs-24"></i
+                ></span>
+                <h3 class="mb-2">Success</h3>
+                <p>Your Password Reset Successfully</p>
+                <router-link to="/login-3" class="btn btn-primary w-100"
+                  >Back to Login</router-link
+                >
+              </div>
+            </div>
+            <div class="mt-5 text-center">
+              <p class="mb-0">Copyright &copy; {{ new Date().getFullYear() }} - Preskool</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Main Wrapper -->
+  </div>
+</template>
