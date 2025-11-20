@@ -2,14 +2,16 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { ref } from "vue";
 
+import apiClient from "@/services/apiClient";
+
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
   const token = ref(null);
 
 const login = async (values) => {
   try {
-    const res = await axios.post(
-      "https://school_backend.test/api/adminpanel/login-check",
+    const res = await apiClient.post(
+      "adminpanel/login-check",
       {
         email: values.email,
         password: values.password
