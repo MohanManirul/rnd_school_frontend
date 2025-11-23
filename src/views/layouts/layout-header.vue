@@ -1,3 +1,167 @@
+<script setup>
+import { useAuthStore } from "@/stores/auth";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useRoute } from "vue-router";
+
+// ------------------ Refs ------------------
+const darkModeToggle = ref(null);
+const lightModeToggle = ref(null);
+const notificationClass = ref("pe-1");
+
+// ------------------ Router ------------------
+
+const route = useRoute();
+const authStore = useAuthStore();
+
+const handleLogout = async () => {
+  await authStore.logout();
+};
+
+// ------------------ Computed ------------------
+const shouldHideThemeSettings = computed(() => {
+  const hiddenLayouts = [
+    "layout-mini",
+    "layout-default",
+    "layout-box",
+    "layout-rtl",
+    "layout-dark",
+  ];
+  return hiddenLayouts.includes(route.name);
+});
+
+// ------------------ Dark Mode ------------------
+function enableDarkMode() {
+  document.documentElement.setAttribute("data-theme", "dark");
+  darkModeToggle.value?.classList.remove("activate");
+  lightModeToggle.value?.classList.add("activate");
+  localStorage.setItem("darkMode", "enabled");
+}
+
+function disableDarkMode() {
+  document.documentElement.setAttribute("data-theme", "light");
+  lightModeToggle.value?.classList.remove("activate");
+  darkModeToggle.value?.classList.add("activate");
+  localStorage.removeItem("darkMode");
+}
+
+// ------------------ Notification ------------------
+function handleClick(event) {
+  event.stopPropagation();
+  if (notificationClass.value === "pe-1 notification-item-show") {
+    notificationClass.value = "pe-1";
+    document.removeEventListener("click", handleOutsideClick);
+  } else {
+    notificationClass.value = "pe-1 notification-item-show";
+    document.addEventListener("click", handleOutsideClick);
+  }
+}
+
+function handleOutsideClick(event) {
+  const notificationItem = event.target.closest(".notification-item");
+  if (!notificationItem) {
+    notificationClass.value = "pe-1";
+    document.removeEventListener("click", handleOutsideClick);
+  }
+}
+
+// ------------------ Sidebar ------------------
+function toggleSidebar() {
+  document.body.classList.toggle("mini-sidebar");
+}
+
+function toggleSidebar1() {
+  document.body.classList.toggle("slide-nav");
+}
+
+// ------------------ Fullscreen ------------------
+function initFullScreen() {
+  document.body.classList.toggle("fullscreen-enable");
+  if (
+    !document.fullscreenElement &&
+    !document.mozFullScreenElement &&
+    !document.webkitFullscreenElement
+  ) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
+
+// ------------------ Sidebar Mouseover ------------------
+function handleMouseover(e) {
+  e.stopPropagation();
+  const body = document.body;
+  const toggleBtn = document.getElementById("toggle_btn");
+
+  if (body.classList.contains("mini-sidebar") && toggleBtn && isElementVisible(toggleBtn)) {
+    const target = e.target.closest(".sidebar, .header-left");
+    if (target) {
+      body.classList.add("expand-menu");
+      slideDownSubmenu();
+    } else {
+      body.classList.remove("expand-menu");
+      slideUpSubmenu();
+    }
+    e.preventDefault();
+  }
+}
+
+function isElementVisible(element) {
+  return element.offsetWidth > 0 || element.offsetHeight > 0;
+}
+
+function slideDownSubmenu() {
+  const subdropPlusUl = document.getElementsByClassName("subdrop");
+  for (let i = 0; i < subdropPlusUl.length; i++) {
+    const submenu = subdropPlusUl[i].nextElementSibling;
+    if (submenu && submenu.tagName.toLowerCase() === "ul") {
+      submenu.style.display = "block";
+    }
+  }
+}
+
+function slideUpSubmenu() {
+  const subdropPlusUl = document.getElementsByClassName("subdrop");
+  for (let i = 0; i < subdropPlusUl.length; i++) {
+    const submenu = subdropPlusUl[i].nextElementSibling;
+    if (submenu && submenu.tagName.toLowerCase() === "ul") {
+      submenu.style.display = "none";
+    }
+  }
+}
+
+// ------------------ Lifecycle ------------------
+onMounted(() => {
+  // Dark Mode
+  if (localStorage.getItem("darkMode") === "enabled") {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
+
+  // Mouseover listener
+  document.addEventListener("mouseover", handleMouseover);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("mouseover", handleMouseover);
+  document.removeEventListener("click", handleOutsideClick);
+});
+</script>
+
+
 <template>
   <div class="header">
     <!-- Logo -->
@@ -445,10 +609,11 @@
                   ><i class="ti ti-settings me-2"></i>Settings</router-link
                 >
                 <hr class="m-0" />
-                <router-link
-                  class="dropdown-item d-inline-flex align-items-center p-2"
+                <button
+                  @click="handleLogout"
+                  class="dropdown-item d-inline-flex align-items-center p-2 btn btn-danger btn-sm"
                   to="/"
-                  ><i class="ti ti-login me-2"></i>Logout</router-link
+                  ><i class="ti ti-login me-2"></i>Logout</button
                 >
               </div>
             </div>
@@ -478,175 +643,4 @@
   </div>
   <theme-settings v-if="!shouldHideThemeSettings"></theme-settings>
 </template>
-<script>
-import { ref, onMounted } from "vue";
-export default {
-  data() {
-    return {
-      notificationClass: "pe-1",
-    };
-  },
-  computed: {
-    shouldHideThemeSettings() {
-      const hiddenLayouts = [
-        "layout-mini",
-        "layout-default",
-        "layout-box",
-        "layout-rtl",
-        "layout-dark",
-      ];
-      return hiddenLayouts.includes(this.$route.name);
-    },
-  },
-  setup() {
-    const darkModeToggle = ref(null);
-    const lightModeToggle = ref(null);
 
-    // Function to enable dark mode
-    function enableDarkMode() {
-      document.documentElement.setAttribute("data-theme", "dark");
-      darkModeToggle.value.classList.remove("activate");
-      lightModeToggle.value.classList.add("activate");
-      localStorage.setItem("darkMode", "enabled");
-    }
-
-    // Function to disable dark mode
-    function disableDarkMode() {
-      document.documentElement.setAttribute("data-theme", "light");
-      lightModeToggle.value.classList.remove("activate");
-      darkModeToggle.value.classList.add("activate");
-      localStorage.removeItem("darkMode");
-    }
-
-    // Check the current mode on page load
-    onMounted(() => {
-      const darkMode = localStorage.getItem("darkMode");
-      if (darkMode === "enabled") {
-        enableDarkMode();
-      } else {
-        disableDarkMode();
-      }
-    });
-
-    return {
-      darkModeToggle,
-      lightModeToggle,
-      enableDarkMode,
-      disableDarkMode,
-    };
-  },
-
-  mounted() {
-    this.initMouseoverListener();
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
-  },
-  methods: {
-    handleClick(event) {
-      event.stopPropagation();
-
-      if (this.notificationClass === "pe-1 notification-item-show") {
-        // If the class is already present, remove it
-        this.notificationClass = "";
-        document.removeEventListener("click", this.handleOutsideClick);
-      } else {
-        // If the class is not present, add it
-        this.notificationClass = "pe-1 notification-item-show";
-        document.addEventListener("click", this.handleOutsideClick);
-      }
-    },
-    handleOutsideClick(event) {
-      // Check if the click was outside the notification item
-      const notificationItem = event.target.closest(".notification-item");
-      if (!notificationItem) {
-        this.notificationClass = "";
-        // Remove the event listener
-        document.removeEventListener("click", this.handleOutsideClick);
-      }
-    },
-    toggleSidebar1() {
-      const body = document.body;
-      body.classList.toggle("slide-nav");
-    },
-    toggleSidebar() {
-      const body = document.body;
-      body.classList.toggle("mini-sidebar");
-    },
-
-    initFullScreen() {
-      document.body.classList.toggle("fullscreen-enable");
-      if (
-        !document.fullscreenElement &&
-        /* alternative standard method */
-        !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement
-      ) {
-        // current working methods
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen();
-        } else if (document.documentElement.mozRequestFullScreen) {
-          document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-          document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-      } else {
-        if (document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-      }
-    },
-
-    initMouseoverListener() {
-      document.addEventListener("mouseover", this.handleMouseover);
-    },
-    handleMouseover(e) {
-      e.stopPropagation();
-
-      const body = document.body;
-      const toggleBtn = document.getElementById("toggle_btn");
-
-      if (body.classList.contains("mini-sidebar") && this.isElementVisible(toggleBtn)) {
-        const target = e.target.closest(".sidebar, .header-left");
-
-        if (target) {
-          body.classList.add("expand-menu");
-          this.slideDownSubmenu();
-        } else {
-          body.classList.remove("expand-menu");
-          this.slideUpSubmenu();
-        }
-
-        e.preventDefault();
-      }
-    },
-    isElementVisible(element) {
-      return element.offsetWidth > 0 || element.offsetHeight > 0;
-    },
-    slideDownSubmenu() {
-      const subdropPlusUl = document.getElementsByClassName("subdrop");
-      for (let i = 0; i < subdropPlusUl.length; i++) {
-        const submenu = subdropPlusUl[i].nextElementSibling;
-        if (submenu && submenu.tagName.toLowerCase() === "ul") {
-          submenu.style.display = "block";
-        }
-      }
-    },
-    slideUpSubmenu() {
-      const subdropPlusUl = document.getElementsByClassName("subdrop");
-      for (let i = 0; i < subdropPlusUl.length; i++) {
-        const submenu = subdropPlusUl[i].nextElementSibling;
-        if (submenu && submenu.tagName.toLowerCase() === "ul") {
-          submenu.style.display = "none";
-        }
-      }
-    },
-  },
-  beforeUnmount() {
-    document.removeEventListener("mouseover", this.handleMouseover);
-    document.removeEventListener("click", this.handleOutsideClick);
-  },
-};
-</script>

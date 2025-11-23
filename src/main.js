@@ -10,10 +10,12 @@ import FlagIcon from 'vue-flag-icon';
 import DatePicker from 'vue3-datepicker'
 import StarRating from "vue3-star-ratings";
 import VueEasyLightbox from "vue-easy-lightbox";
+ 
+import Layout_Header from '@/views/layouts/layout-header.vue'
+
 import { createPinia } from "pinia";
 const pinia = createPinia();
 /*************Layout *****************/
-import Layout_Header from '@/views/layouts/layout-header.vue'
 import Layout_Sidebar from '@/views/layouts/layout-sidebar.vue'
 import VerticalSidebar from '@/views/layouts/vertical-sidebar.vue'
 import Index_Loader from '@/views/layouts/index-loader.vue'

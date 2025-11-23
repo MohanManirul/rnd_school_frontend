@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 import apiClient from "@/services/apiClient";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
   const token = ref(null);
+  const router = useRouter();
 
 const login = async (values) => {
   try {
@@ -19,7 +21,7 @@ const login = async (values) => {
       { withCredentials: true }
     );
 
-    console.log("store-res", res.data.data); // debug friendly
+    console.log("store-res", res); // debug friendly
     // res.data.data এ token আছে
     user.value = { email: values.email }; // বা API থেকে যদি user info আসে
     return { success: true };
@@ -32,13 +34,25 @@ const login = async (values) => {
   }
 };
 
-
-
-  const logout = () => {
-    user.value = null;
-    token.value = null;
-    localStorage.removeItem("token");
+  // Logout
+  const logout = async () => {
+   
+    try {
+    
+    const res = await apiClient.post(
+      "/adminpanel/log-out"
+    );
+     
+    if (res.data.msg === "success"){
+     console.log(res.data.msg,"logout");
+     
+      router.push("/");
+    }
+    } catch (e) {
+      alert("Something went wrong");
+    }
   };
+
 
   return { user, token, login, logout };
 });

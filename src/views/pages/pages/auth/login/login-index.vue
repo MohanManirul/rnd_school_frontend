@@ -184,7 +184,7 @@ const schema = Yup.object({
   email: Yup.string().required("Email is required").email("Invalid email"),
   password: Yup.string().required("Password is required").min(6, "Min 6 chars"),
 });
- 
+
 // password toggle
 const showPassword = ref(false);
 const toggleShow = () => {
@@ -194,9 +194,8 @@ const buttonLabel = () => (showPassword.value ? "Hide" : "Show");
 const onSubmit = async (values) => {
   
   const result = await auth.login(values);
-  
-  console.log("page-res" , result.message);
-
+ 
+  (result);
   if (!result.success) {
     return alert(result.message);
   }
