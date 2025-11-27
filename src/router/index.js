@@ -30,7 +30,7 @@ const routes = [
     path: '/register-3',
     name: 'register-3',
     component: () => import('@/views/pages/pages/auth/register/register-3.vue'),
-  },
+  }, 
   {
     path: '/forgot-password',
     name: 'forgot-password',

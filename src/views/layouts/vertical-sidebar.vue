@@ -1,4 +1,8 @@
 <template>
+    <div>
+    <h3>Sidebar Data</h3>
+    <pre>{{ formattedSidebar }}</pre>
+  </div>
   <ul>
     <li v-for="item in side_bar_data" :key="item.title">
       <h6 class="submenu-hdr">
@@ -148,108 +152,148 @@
               </template>
             </ul>
           </li>
+       
         </template>
       </ul>
     </li>
   </ul>
 </template>
 
-<script>
-import side_bar_data from "@/assets/json/sidebar-data.json";
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import sideBarJson from "@/assets/json/sidebar-data.json";
+const side_bar_data = ref([]);  // initially empty
 
-export default {
-  data() {
-    return {
-      side_bar_data: side_bar_data,
-      openMenuItem: null,
-      showSubRoute: null,
-      route_array: [],
-      multilevel: [false, false, false],
-    };
-  },
-  methods: {
-    expandSubMenus(menu) {
-      this.side_bar_data.forEach((item) => {
-        if (item.menu && Array.isArray(item.menu)) {
-          item.menu.forEach((subMenu) => {
-            if (subMenu !== menu) {
-              subMenu.showSubRoute = false;
-              subMenu.showSubRoute1 = false;
-            }
-          });
+console.log("sideBarJson" ,side_bar_data);
+
+
+import { useLeftSideBarStore } from "@/stores/leftSideBarData";
+
+const LeftSideBarStore = useLeftSideBarStore();
+
+
+const leftSideBarMenuSubmenu = async () => {
+  const response = await LeftSideBarStore.leftSideBarData();
+  side_bar_data.value = response;
+};
+
+// Computed for pretty printing
+const formattedSidebar = computed(() => {
+  return JSON.stringify(side_bar_data.value, null, 2); // 2-space indentation
+});
+
+// Auto Execute
+onMounted(() => {
+  leftSideBarMenuSubmenu();
+});
+// ROUTE
+const route = useRoute();
+
+
+// REACTIVE STATES
+
+
+const openMenuItem = ref(null);
+const showSubRoute = ref(null);
+const route_array = ref([]);
+const multilevel = ref([false, false, false]);
+
+// METHODS ===============================
+const expandSubMenus = (menu) => {
+  side_bar_data.value.forEach((item) => {
+    if (item.menu && Array.isArray(item.menu)) {
+      item.menu.forEach((subMenu) => {
+        if (subMenu !== menu) {
+          subMenu.showSubRoute = false;
+          subMenu.showSubRoute1 = false;
         }
       });
-      menu.showSubRoute = !menu.showSubRoute;
-      // Save the state to localStorage
-      localStorage.setItem("openSubMenu", JSON.stringify(this.side_bar_data));
-    },
-    openMenu(menu) {
-      this.openMenuItem = this.openMenuItem === menu ? null : menu;
-      // Save the state to localStorage
-      localStorage.setItem(
-        "openMenuItem",
-        this.openMenuItem ? this.openMenuItem.menuValue : null
-      );
-    },
-    openSubmenuOne(subMenus) {
-      this.showSubRoute = this.showSubRoute === subMenus ? null : subMenus;
-      // Save the state to localStorage
-      localStorage.setItem(
-        "showSubRoute",
-        this.showSubRoute ? this.showSubRoute.menuValue : null
-      );
-    },
-    getCurrentPath() {
-      this.route_array = this.$route.path.split("/");
-      return this.$route.path;
-    },
-    restoreMenuState() {
-      // Restore the state from localStorage
-      const openMenuItem = localStorage.getItem("openMenuItem");
-      const openSubMenu = localStorage.getItem("openSubMenu");
+    }
+  });
 
-      if (openSubMenu) {
-        this.side_bar_data = JSON.parse(openSubMenu);
-      }
+  menu.showSubRoute = !menu.showSubRoute;
 
-      if (openMenuItem) {
-        this.openMenuItem = this.side_bar_data.find(
-          (item) => item.menu && item.menu.some((menu) => menu.menuValue === openMenuItem)
-        );
-      }
-    },
-  },
-  computed: {
-    currentPath() {
-      return this.getCurrentPath();
-    },
-    isMenuActive() {
-      return (menu) => {
-        if (menu.menuValue === "Application") {
-          return (
-            this.$route.path.startsWith("/application") || // Check if current route starts with '/application'
-            this.$route.path.startsWith("/call") ||
-            this.$route.path === menu.active_link ||
-            this.$route.path === menu.active_link1 ||
-            this.$route.path === menu.active_link2
-          );
-        } else {
-          return (
-            this.$route.path === menu.route ||
-            this.$route.path === menu.active_link ||
-            this.$route.path === menu.active_link1 ||
-            this.$route.path === menu.active_link2 ||
-            this.$route.path === menu.active_link3 ||
-            this.$route.path === menu.active_link4 ||
-            this.$route.path === menu.active_link5 ||
-            this.$route.path === menu.active_link6
-          );
-        }
-      };
-    },
-  },
-  mounted() {
-    this.restoreMenuState();
-  },
+  // Save the state to localStorage
+  localStorage.setItem("openSubMenu", JSON.stringify(side_bar_data.value));
 };
+
+const openMenu = (menu) => {
+  openMenuItem.value = openMenuItem.value === menu ? null : menu;
+
+  localStorage.setItem(
+    "openMenuItem",
+    openMenuItem.value ? openMenuItem.value.menuValue : null
+  );
+};
+
+const openSubmenuOne = (subMenus) => {
+  showSubRoute.value = showSubRoute.value === subMenus ? null : subMenus;
+
+  localStorage.setItem(
+    "showSubRoute",
+    showSubRoute.value ? showSubRoute.value.menuValue : null
+  );
+};
+
+const getCurrentPath = () => {
+  route_array.value = route.path.split("/");
+  return route.path;
+};
+
+// RESTORE MENU STATE ===============================
+const restoreMenuState = () => {
+  const openMenuItemName = localStorage.getItem("openMenuItem");
+  const openSubMenu = localStorage.getItem("openSubMenu");
+
+  if (openSubMenu) {
+    side_bar_data.value = JSON.parse(openSubMenu);
+  }
+
+  if (openMenuItemName) {
+    side_bar_data.value.forEach((item) => {
+      if (item.menu && Array.isArray(item.menu)) {
+        item.menu.forEach((menu) => {
+          if (menu.menuValue === openMenuItemName) {
+            openMenuItem.value = menu;
+          }
+        });
+      }
+    });
+  }
+};
+
+// COMPUTED ===============================
+const currentPath = computed(() => getCurrentPath());
+
+const isMenuActive = computed(() => {
+  return (menu) => {
+    if (menu.menuValue === "Application") {
+      return (
+        route.path.startsWith("/application") ||
+        route.path.startsWith("/call") ||
+        route.path === menu.active_link ||
+        route.path === menu.active_link1 ||
+        route.path === menu.active_link2
+      );
+    }
+
+    return (
+      route.path === menu.route ||
+      route.path === menu.active_link ||
+      route.path === menu.active_link1 ||
+      route.path === menu.active_link2 ||
+      route.path === menu.active_link3 ||
+      route.path === menu.active_link4 ||
+      route.path === menu.active_link5 ||
+      route.path === menu.active_link6
+    );
+  };
+});
+
+// MOUNTED ===============================
+onMounted(() => {
+  restoreMenuState();
+});
 </script>
+

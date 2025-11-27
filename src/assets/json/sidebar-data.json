@@ -1,9 +1,9 @@
 [
-  {
+  { 
     "title": "MAIN",
     "showAsTab": true,
     "separateRoute": false,
-    "menu": [
+    "menu": [ 
       {
         "menuValue": "Dashboard",
         "hasSubRoute": true,

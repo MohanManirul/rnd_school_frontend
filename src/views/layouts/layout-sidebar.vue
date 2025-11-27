@@ -4,7 +4,7 @@
       <simplebar id="scrollbar" class="h-100" ref="scrollbar">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul>
-          <li>
+          <li> 
             <a
               href="javascript:void(0);"
               class="d-flex align-items-center border bg-white rounded p-2 mb-4"
