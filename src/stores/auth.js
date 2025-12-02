@@ -43,8 +43,7 @@ const login = async (values) => {
       "/adminpanel/log-out"
     );
      
-    if (res.data.msg === "success"){
-     console.log(res.data.msg,"logout");
+    if (res.data.msg === "success"){    
      
       router.push("/");
     }
