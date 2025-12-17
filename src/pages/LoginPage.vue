@@ -15,8 +15,6 @@ const login = async() => {
       password  : password.value
   }) ;
   if(success){
-    console.log(success);
-    
     router.push('dashboard') ;
   }
 }

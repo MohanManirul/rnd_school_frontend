@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import apiClient from './../services/axiosClient';
+import { useRouter } from "vue-router";
 
 export const useAuthStore =  defineStore('auth',()=>{
     //state
+    const router =useRouter()
     const user = ref(null);
     const token = ref(localStorage.getItem('token') || null) ;
  
@@ -30,8 +32,23 @@ export const useAuthStore =  defineStore('auth',()=>{
         console.log(error);
       }
     };
+
     //logout
+     const logout = async (credentials) => {
+       try {
+         const res = await apiClient.post("/logout", credentials);
+         
+         return true;
+       } catch (error) {
+         console.log(error);
+       }finally{
+        token.value = null;
+        localStorage.removeItem("token");
+        router.push('login');
+       }
+     };
 
     //get User
-    return { user,token, login, register };
+    return { user, token, login, logout, register };
+
 });
