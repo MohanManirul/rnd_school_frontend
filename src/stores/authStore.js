@@ -14,17 +14,24 @@ export const useAuthStore =  defineStore('auth',()=>{
       try {
         
         const res = await apiClient.post("/register", credentials);
-        console.log(credentials);
-        
         return ture;
       } catch (error) {
         console.log(error);
       }
     };
     //login
-
+    const login = async (credentials) => {
+      try {
+        const res = await apiClient.post("/login", credentials);
+        token.value = res.data.data.token ;
+        localStorage.setItem("token", token.value);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     //logout
 
     //get User
-    return { user,token, register };
+    return { user,token, login, register };
 });

@@ -15,10 +15,10 @@ import { useRoute } from 'vue-router';
   const registration = async() => {
     
   const success = await AuthStore.register({
-      email : email.value,
-      name : name.value,
-      password : password.value,
-      password_confirmation : password_confirm.value,
+      email                   : email.value,
+      name                    : name.value,
+      password                : password.value,
+      password_confirmation   : password_confirm.value,
 
     });
 
@@ -88,12 +88,21 @@ import { useRoute } from 'vue-router';
                 </div>
                 <div class="row mt-2 p-0">
                   <div class="col-md-4 p-2">
-                    <button
+                    <RouterLink
                       type="submit"
                       class="btn mt-3 w-100 float-end btn-primary animated fadeInUp"
                     >
                       Sign Up
-                    </button>
+                    </RouterLink>
+                    <div class="float-end mt-3">
+                      <span>
+                        <RouterLink
+                        to="login"
+                          class="text-center ms-3 h6 animated fadeInUp"
+                          >Sign In
+                        </RouterLink>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </form>
