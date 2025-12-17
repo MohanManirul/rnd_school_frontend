@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { router } from './router';
+import "./style.css";
 import VueApexCharts from "vue3-apexcharts";
 import Antd from 'ant-design-vue';
 import Vue3Select from 'vue3-select-component'
@@ -254,6 +254,7 @@ import '@/assets/css/sticky.css'
 import '@/assets/css/tabler-icons.css'
 import '@/assets/css/feather.css'
 import '@/assets/scss/main.scss';
+import router from './router';
 
 const app = createApp(App);
 
