@@ -169,7 +169,7 @@
 import { ref } from "vue";
 
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/prev_auth";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as Yup from "yup";
 

@@ -6,10 +6,12 @@ import { useRouter } from "vue-router";
 import apiClient from "@/services/axiosClient";
 
 export const useAuthStore = defineStore("auth", () => {
+  // states
   const user = ref(null);
   const token = ref(null);
   const router = useRouter();
 
+  //actions
   const login = async (values) => {
     try {
       const res = await apiClient.post(

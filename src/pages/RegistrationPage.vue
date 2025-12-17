@@ -4,10 +4,11 @@ import { useAuthStore } from '../stores/authStore';
 import { useRoute } from 'vue-router';
 
   const AuthStore = useAuthStore() ;
-  const email = ref('');
-  const name = ref('') ;
-  const password = ref('');
-  const password_confirm = ref('');
+
+  const email             = ref('');
+  const name              = ref('') ;
+  const password          = ref('');
+  const password_confirm  = ref('');
 
   const router = useRoute() ;
 
