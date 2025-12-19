@@ -1,37 +1,28 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import apiClient from "./../services/axiosClient";
+import apiClient from "../services/axiosClient";
 import { useRouter } from "vue-router";
 import cogoToast from "cogo-toast";
 
 export const useAuthStore = defineStore("auth", () => {
-  //state
   const router = useRouter();
+
+  // State
   const user = ref(null);
   const token = ref(localStorage.getItem("token") || null);
 
-  //actions
+  //Actions
 
-  //registration
+  //Registration
   const register = async (credentials) => {
     try {
-      const res = await apiClient.post("/register", credentials);
-      return ture;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  //login
-  const login = async (credentials) => {
-    try {
-      const res = await apiClient.post("/login", credentials);
-      token.value = res.data.data.token;
-      localStorage.setItem("token", token.value);
-      cogoToast.success("Login Success", { position: "top-right" });
+      await apiClient.post("/register", credentials);
+      cogoToast.success("Registration Successfull", {
+        position: "top-right"
+      });
       return true;
     } catch (error) {
-      console.log(error);
-
+      //   validation error
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         for (const field in errors) {
@@ -40,12 +31,50 @@ export const useAuthStore = defineStore("auth", () => {
           });
         }
       }
-      // invalid credentials
+      //   Email already Taken
       else if (error.response?.data?.message) {
         cogoToast.error(error.response.data.message, {
           position: "top-right"
         });
-      } else {
+      }
+      // Server or Network
+      else {
+        cogoToast.error("Something went wrong", {
+          position: "top-right"
+        });
+      }
+      return false;
+    }
+  };
+
+  //Login
+  const login = async (credentials) => {
+    try {
+      const res = await apiClient.post("/login", credentials);
+      console.log(res);
+      token.value = res.data.data.token;
+      localStorage.setItem("token", token.value);
+      cogoToast.success("Login Successfull", { position: "top-right" });
+      return true;
+    } catch (error) {
+      console.log(error);
+      //   validation error
+      if (error.response?.data?.errors) {
+        const errors = error.response.data.errors;
+        for (const field in errors) {
+          errors[field].forEach((msg) => {
+            cogoToast.error(msg, { position: "top-right" });
+          });
+        }
+      }
+      //   Invalid Credentials
+      else if (error.response?.data?.message) {
+        cogoToast.error(error.response.data.message, {
+          position: "top-right"
+        });
+      }
+      // Server or Network
+      else {
         cogoToast.error("Something went wrong", {
           position: "top-right"
         });
@@ -53,21 +82,36 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  //logout
-  const logout = async (credentials) => {
+  // Logout
+  const logout = async () => {
     try {
-      const res = await apiClient.post("/logout", credentials);
+      const success = await apiClient.post("/logout");
+      token.value = null;
+      localStorage.removeItem("token");
+      cogoToast.success("Logout Successfull", { position: "top-right" });
+
+      if (success) {
+        router.push({ name: "login" });
+      }
 
       return true;
     } catch (error) {
       console.log(error);
-    } finally {
-      token.value = null;
-      localStorage.removeItem("token");
-      router.push("login");
+      if (error?.message) {
+        cogoToast.error(error.message, {
+          position: "top-right"
+        });
+      }
+      return false;
     }
   };
 
-  //get User
-  return { user, token, login, logout, register };
+  // Get User
+  return {
+    user,
+    token,
+    register,
+    login,
+    logout
+  };
 });
