@@ -56,14 +56,14 @@ import { useAuthStore } from '@/stores/authStore';
 
   <!-- Sidebar -->
   <div class="side-nav-open">
-    <a href="/dashboard" class="side-bar-item mt-2">
+    <RouterLink :to="{name:'dashboard'}" class="side-bar-item mt-2">
       <i class="bi bi-speedometer2 side-bar-item-icon"></i>
       <span>Dashboard</span>
-    </a>
-    <a href="/Create" class="side-bar-item mt-2">
+    </RouterLink>
+    <RouterLink :to="{name:'create'}" class="side-bar-item mt-2">
       <i class="bi bi-pencil-square side-bar-item-icon"></i>
       <span>Create New</span>
-    </a>
+    </RouterLink>
     <a href="/All" class="side-bar-item mt-2">
       <i class="bi bi-list-ul side-bar-item-icon"></i>
       <span>New Task</span>
@@ -84,8 +84,7 @@ import { useAuthStore } from '@/stores/authStore';
 
   <!-- Content -->
   <div class="content">
-    <h3>Dashboard Content Area</h3>
-    <p>This section will display your dashboard content.</p>
+    <router-view />
   </div>
 </template>
 

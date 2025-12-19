@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegistrationPage from "@/pages/RegistrationPage.vue";
 import DashboardPage from "@/pages/DashboardPage.vue";
+import CreateTask from "./components/tasks/CreateTask.vue";
 
 const routes = [
   {
@@ -21,7 +22,14 @@ const routes = [
   {
     path: "/dashboard",
     component: DashboardPage,
-    name: "dashboard"
+    name: "dashboard",
+    children: [
+      {
+        path: "/create",
+        component: CreateTask,
+        name: "create"
+      }
+    ]
   }
 ];
 
