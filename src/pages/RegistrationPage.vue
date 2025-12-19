@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
   const AuthStore = useAuthStore() ;
 
@@ -10,10 +10,10 @@ import { useRoute } from 'vue-router';
   const password          = ref('');
   const password_confirm  = ref('');
 
-  const router = useRoute() ;
+  const router = useRouter() ;
 
   const registration = async() => {
-    
+
   const success = await AuthStore.register({
       email                   : email.value,
       name                    : name.value,
@@ -88,12 +88,12 @@ import { useRoute } from 'vue-router';
                 </div>
                 <div class="row mt-2 p-0">
                   <div class="col-md-4 p-2">
-                    <RouterLink
+                    <button
                       type="submit"
                       class="btn mt-3 w-100 float-end btn-primary animated fadeInUp"
                     >
                       Sign Up
-                    </RouterLink>
+                    </button>
                     <div class="float-end mt-3">
                       <span>
                         <RouterLink

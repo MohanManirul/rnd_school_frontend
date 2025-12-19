@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 
 
 const login = async() => {
+  
   const success = await authStore.login({
       email     : email.value,
       password  : password.value
