@@ -64,22 +64,22 @@ import { useAuthStore } from '@/stores/authStore';
       <i class="bi bi-pencil-square side-bar-item-icon"></i>
       <span>Create New</span>
     </RouterLink>
-    <a href="/All" class="side-bar-item mt-2">
+    <RouterLink :to="{name:'newtask'}" class="side-bar-item mt-2">
       <i class="bi bi-list-ul side-bar-item-icon"></i>
       <span>New Task</span>
-    </a>
-    <a href="/Progress" class="side-bar-item mt-2">
+    </RouterLink>
+    <RouterLink :to="{name:'inprogress'}" class="side-bar-item mt-2">
       <i class="bi bi-hourglass-split side-bar-item-icon"></i>
       <span>In Progress</span>
-    </a>
-    <a href="/Completed" class="side-bar-item mt-2">
+    </RouterLink>
+    <RouterLink :to="{name:'completed'}" class="side-bar-item mt-2">
       <i class="bi bi-check-circle side-bar-item-icon"></i>
       <span>Completed</span>
-    </a>
-    <a href="/Canceled" class="side-bar-item mt-2">
+    </RouterLink>
+    <RouterLink :to="{name:'canceled'}" class="side-bar-item mt-2">
       <i class="bi bi-x-octagon side-bar-item-icon"></i>
       <span>Canceled</span>
-    </a>
+    </RouterLink>
   </div>
 
   <!-- Content -->

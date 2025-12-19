@@ -15,7 +15,10 @@ import { useTaskStore } from '@/stores/taskStore';
             title       : title.value,
             description : description.value,
             status      : 'new'
-        })
+        });
+
+        title.value         = '';
+        description.value   = '' ;
     }
 </script>
 
