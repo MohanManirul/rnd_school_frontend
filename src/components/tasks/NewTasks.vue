@@ -11,7 +11,7 @@ const router = useRouter() ;
 
     // edit task
     const goToEdit = (id) => {
-        router.push('EditTask',{id:id}) ;
+        router.push({name:'edittask',params :{id:id}}) ;
     }
 </script>
 

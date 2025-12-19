@@ -30,34 +30,34 @@ const routes = [
     name: "dashboard",
     children: [
       {
-        path: "/create",
+        path: "create",
         component: CreateTask,
         name: "create"
       },
       {
-        path: "/newtask",
+        path: "newtask",
         component: NewTasks,
         name: "newtask"
       },
       {
-        path: "/in-progress",
+        path: "in-progress",
         component: ProgressTask,
         name: "inprogress"
       },
       {
-        path: "/completed",
+        path: "completed",
         component: CompletedTasks,
         name: "completed"
       },
       {
-        path: "/canceled",
+        path: "canceled",
         component: CanceledTasks,
         name: "canceled"
       },
       {
         path: "tasks/:id/edit",
         component: EditTask,
-        name: "EditTask"
+        name: "edittask"
       }
     ]
   }
