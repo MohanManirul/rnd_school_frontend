@@ -2,7 +2,6 @@
 import { useTaskStore } from '@/stores/taskStore';
 import ShimmerLoader from '../ShimmerLoader.vue';
 import { onBeforeMount } from 'vue';
-import { TableSummary } from 'ant-design-vue';
 
 const taskStore = useTaskStore();
 
@@ -13,6 +12,11 @@ onBeforeMount( ()=>{
 const ParmanentDelete = async (id) => {
     await taskStore.forceDeleteTask(id)
 }
+
+const Restore = async (id) => {
+    await taskStore.RestoreTask(id)
+}
+
 
 </script>
 
@@ -42,7 +46,7 @@ const ParmanentDelete = async (id) => {
               </button>
 
               <button
-                
+                @click="Restore(task.id)"
                 class="btn btn-success btn-sm mt-2 ms-2"
               >
                 Restore
