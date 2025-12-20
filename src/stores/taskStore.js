@@ -24,5 +24,39 @@ export const useTaskStore = defineStore('task', ()=> {
         }
    }
 
-    return { tasks, createTask,loading, fetchTaskByStatus };
+   // get single task by id
+
+   const getTaskById = async(id) =>{
+    const res = await apiClient.get(`/tasks/${id}`) ;
+    return res.data.data ;
+   }
+
+   //update task
+
+   const updateTask = async(id,payload) => {
+        const res = await apiClient.put(`/tasks/${id}`,payload);
+        console.log(res.data.data);
+        
+        const index = tasks.value.findIndex((t)=>t.id===id) ;
+        if(index !==-1) tasks.value[index] = res.data ;
+        
+   }
+
+   //delete task
+
+   const deleteTask = async(id) =>{
+        alert( id);
+        const res = apiClient.delete(`/tasks/${id}`) ;
+        tasks.value = tasks.value.filter((t)=>t.id !==id) ;
+   }
+
+    return {
+      tasks,
+      createTask,
+      loading,
+      fetchTaskByStatus,
+      getTaskById,
+      updateTask,
+      deleteTask
+    };
 })  ;

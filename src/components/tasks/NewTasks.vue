@@ -3,6 +3,7 @@ import { useTaskStore } from '@/stores/taskStore';
 import { onBeforeMount } from 'vue';
 import ShimmerLoader from '../ShimmerLoader.vue'
 import { useRouter } from 'vue-router';
+import cogoToast from 'cogo-toast';
 const router = useRouter() ;
     const taskStore = useTaskStore();
     onBeforeMount(async()=>{
@@ -12,6 +13,19 @@ const router = useRouter() ;
     // edit task
     const goToEdit = (id) => {
         router.push({name:'edittask',params :{id:id}}) ;
+    }
+
+    const deleteSingleTask = async (id) =>{
+      
+      if(!confirm('Are you sure to delete ?')) return ;
+      try{
+          await taskStore.deleteTask(id);
+          cogoToast.success('Task deleted successfully !',{position:'top-right'}) ;
+
+      }catch(error){
+        console.error('error deleting task', error) ;
+        cogoToast.error('Failed to deleted task !',{position:'top-right'}) ;
+      }
     }
 </script>
 
@@ -83,7 +97,7 @@ const router = useRouter() ;
                 </a>
                 <!-- Delete Icon -->
                 <a
-                  @click.prevent="deleteTask(task.id)"
+                  @click.prevent="deleteSingleTask(task.id)"
                   class="icon-nav text-danger mx-1"
                   ><svg
                     stroke="currentColor"
