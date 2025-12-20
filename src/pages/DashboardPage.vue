@@ -80,6 +80,10 @@ import { useAuthStore } from '@/stores/authStore';
       <i class="bi bi-x-octagon side-bar-item-icon"></i>
       <span>Canceled</span>
     </RouterLink>
+    <RouterLink :to="{name:'trashed'}" class="side-bar-item mt-2">
+      <i class="bi bi-x-octagon side-bar-item-icon"></i>
+      <span>Trashed</span>
+    </RouterLink>
   </div>
 
   <!-- Content -->
