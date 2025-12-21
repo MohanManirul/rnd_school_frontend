@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import apiClient from "../services/axiosClient";
+import apiClient from "../services/apiClient";
 import { useRouter } from "vue-router";
 import cogoToast from "cogo-toast";
 
 export const useAuthStore = defineStore("auth", () => {
   const router = useRouter();
-
+ 
   // State
   const user = ref(null);
   const token = ref(localStorage.getItem("token") || null);

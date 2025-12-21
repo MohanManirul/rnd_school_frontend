@@ -37,7 +37,8 @@ import { RouterLink } from 'vue-router';
                         <div class="text-center text-md-end">
                             <ul class="header_list">
                                 <li><a href="wishlist.html"><i class="ti-heart"></i><span>Wishlist</span></a></li>
-                                <li><RouterLink :to="{ name: 'login' }"><i class="ti-user"></i><span>Login</span></RouterLink></li>
+                                <li><RouterLink :to="{ name: 'login' }"><i class="ti-user"></i><span><button class="btn btn-sm btn-danger">Logout</button></span></RouterLink></li>
+                                <li><RouterLink :to="{ name: 'login' }"><i class="ti-user"></i><span><button class="btn btn-sm btn-danger">Login</button></span></RouterLink></li>
                             </ul>
                         </div>
                     </div>

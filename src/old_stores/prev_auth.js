@@ -3,7 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import apiClient from "@/services/axiosClient";
+import apiClient from "@/services/apiClient";
 
 export const useAuthStore = defineStore("auth", () => {
   // states

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import apiClient from "@/services/axiosClient";
+import apiClient from "@/services/apiClient";
 
 export const useLeftSideBarStore = defineStore("leftSideBarStore", () => {
   // Logout

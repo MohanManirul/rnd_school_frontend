@@ -1,12 +1,20 @@
 <script setup>
+
+import { useAuthStore } from '@/store/authStore';
 import { ref } from 'vue';
 
+const authStore = useAuthStore()
 
 const email = ref('');
 
 
 const LoginClick = async() =>{
-    const success = await auth
+    if(!email.value){
+      alert('Please enter email');
+      return ;
+    }
+    const login = await authStore.login(email.value) ;
+
 }
 
 </script>  
