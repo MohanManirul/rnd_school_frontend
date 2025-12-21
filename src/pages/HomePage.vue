@@ -1,21 +1,16 @@
 <script setup>
-import LoginComponent from '@/components/frontend/LoginComponent.vue';
 import MenuBar from '@/components/frontend/MenuBar.vue';
+import AppLayout from '@/components/layout/AppLayout.vue';
 
 
 </script>
 
 
-
 <template>
-
     <AppLayout >
         <MenuBar />
-        <LoginComponent />
     </AppLayout>
-
 </template>
-
 
 
 <style scoped>
