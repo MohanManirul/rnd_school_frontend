@@ -1,5 +1,5 @@
 <script setup>
-import { useAuthStore } from "@/stores/prev_auth";
+import { useAuthStore } from "@/old_stores/prev_auth";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 
@@ -24,7 +24,7 @@ const shouldHideThemeSettings = computed(() => {
     "layout-default",
     "layout-box",
     "layout-rtl",
-    "layout-dark",
+    "layout-dark"
   ];
   return hiddenLayouts.includes(route.name);
 });
@@ -86,7 +86,9 @@ function initFullScreen() {
     } else if (document.documentElement.mozRequestFullScreen) {
       document.documentElement.mozRequestFullScreen();
     } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      document.documentElement.webkitRequestFullscreen(
+        Element.ALLOW_KEYBOARD_INPUT
+      );
     }
   } else {
     if (document.cancelFullScreen) {
@@ -105,7 +107,11 @@ function handleMouseover(e) {
   const body = document.body;
   const toggleBtn = document.getElementById("toggle_btn");
 
-  if (body.classList.contains("mini-sidebar") && toggleBtn && isElementVisible(toggleBtn)) {
+  if (
+    body.classList.contains("mini-sidebar") &&
+    toggleBtn &&
+    isElementVisible(toggleBtn)
+  ) {
     const target = e.target.closest(".sidebar, .header-left");
     if (target) {
       body.classList.add("expand-menu");
@@ -160,7 +166,6 @@ onBeforeUnmount(() => {
   document.removeEventListener("click", handleOutsideClick);
 });
 </script>
-
 
 <template>
   <div class="header">
@@ -325,7 +330,9 @@ onBeforeUnmount(() => {
               >
                 <i class="ti ti-square-rounded-plus"></i>
               </a>
-              <div class="dropdown-menu dropdown-menu-right border shadow-sm dropdown-md">
+              <div
+                class="dropdown-menu dropdown-menu-right border shadow-sm dropdown-md"
+              >
                 <div class="p-3 border-bottom">
                   <h5>Add New</h5>
                 </div>
@@ -424,13 +431,17 @@ onBeforeUnmount(() => {
               <i class="ti ti-bell"></i>
               <span class="notification-status-dot"></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-end notification-dropdown p-4">
+            <div
+              class="dropdown-menu dropdown-menu-end notification-dropdown p-4"
+            >
               <div
                 class="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3"
               >
                 <h4 class="notification-title">Notifications (2)</h4>
                 <div class="d-flex align-items-center">
-                  <a href="javascript:void(0);" class="text-primary fs-15 me-3 lh-1"
+                  <a
+                    href="javascript:void(0);"
+                    class="text-primary fs-15 me-3 lh-1"
                     >Mark all as read</a
                   >
                   <div class="dropdown">
@@ -442,17 +453,26 @@ onBeforeUnmount(() => {
                     </a>
                     <ul class="dropdown-menu mt-2 p-3">
                       <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                        >
                           This Week
                         </a>
                       </li>
                       <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                        >
                           Last Week
                         </a>
                       </li>
                       <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                        <a
+                          href="javascript:void(0);"
+                          class="dropdown-item rounded-1"
+                        >
                           Last Week
                         </a>
                       </li>
@@ -467,12 +487,15 @@ onBeforeUnmount(() => {
                     <router-link to="/activities">
                       <div class="d-flex">
                         <span class="avatar avatar-lg me-2 flex-shrink-0">
-                          <img src="@/assets/img/profiles/avatar-27.jpg" alt="Profile" />
+                          <img
+                            src="@/assets/img/profiles/avatar-27.jpg"
+                            alt="Profile"
+                          />
                         </span>
                         <div class="flex-grow-1">
                           <p class="mb-1">
-                            <span class="text-dark fw-semibold">Shawn</span> performance
-                            in Math is below the threshold.
+                            <span class="text-dark fw-semibold">Shawn</span>
+                            performance in Math is below the threshold.
                           </p>
                           <span>Just Now</span>
                         </div>
@@ -483,12 +506,15 @@ onBeforeUnmount(() => {
                     <router-link to="/activities" class="pb-0">
                       <div class="d-flex">
                         <span class="avatar avatar-lg me-2 flex-shrink-0">
-                          <img src="@/assets/img/profiles/avatar-23.jpg" alt="Profile" />
+                          <img
+                            src="@/assets/img/profiles/avatar-23.jpg"
+                            alt="Profile"
+                          />
                         </span>
                         <div class="flex-grow-1">
                           <p class="mb-1">
-                            <span class="text-dark fw-semibold">Sylvia</span> added
-                            appointment on 02:00 PM
+                            <span class="text-dark fw-semibold">Sylvia</span>
+                            added appointment on 02:00 PM
                           </p>
                           <span>10 mins ago</span>
                           <div
@@ -505,13 +531,17 @@ onBeforeUnmount(() => {
                     <router-link to="/activities">
                       <div class="d-flex">
                         <span class="avatar avatar-lg me-2 flex-shrink-0">
-                          <img src="@/assets/img/profiles/avatar-25.jpg" alt="Profile" />
+                          <img
+                            src="@/assets/img/profiles/avatar-25.jpg"
+                            alt="Profile"
+                          />
                         </span>
                         <div class="flex-grow-1">
                           <p class="mb-1">
                             New student record
-                            <span class="text-dark fw-semibold"> George</span> is created
-                            by <span class="text-dark fw-semibold"> Teressa</span>
+                            <span class="text-dark fw-semibold"> George</span>
+                            is created by
+                            <span class="text-dark fw-semibold"> Teressa</span>
                           </p>
                           <span>2 hrs ago</span>
                         </div>
@@ -522,7 +552,10 @@ onBeforeUnmount(() => {
                     <router-link to="/activities">
                       <div class="d-flex">
                         <span class="avatar avatar-lg me-2 flex-shrink-0">
-                          <img src="@/assets/img/profiles/avatar-01.jpg" alt="Profile" />
+                          <img
+                            src="@/assets/img/profiles/avatar-01.jpg"
+                            alt="Profile"
+                          />
                         </span>
                         <div class="flex-grow-1">
                           <p class="mb-1">
@@ -537,7 +570,9 @@ onBeforeUnmount(() => {
                 </div>
               </div>
               <div class="d-flex p-0">
-                <a href="javascript:void(0);" class="btn btn-light w-100 me-2">Cancel</a>
+                <a href="javascript:void(0);" class="btn btn-light w-100 me-2"
+                  >Cancel</a
+                >
                 <router-link to="/activities" class="btn btn-primary w-100"
                   >View All</router-link
                 >
@@ -613,8 +648,9 @@ onBeforeUnmount(() => {
                   @click="handleLogout"
                   class="dropdown-item d-inline-flex align-items-center p-2 btn btn-danger btn-sm"
                   to="/"
-                  ><i class="ti ti-login me-2"></i>Logout</button
                 >
+                  <i class="ti ti-login me-2"></i>Logout
+                </button>
               </div>
             </div>
           </div>
@@ -632,7 +668,9 @@ onBeforeUnmount(() => {
         ><i class="fa fa-ellipsis-v"></i
       ></a>
       <div class="dropdown-menu dropdown-menu-end">
-        <router-link class="dropdown-item" to="/pages/profile">My Profile</router-link>
+        <router-link class="dropdown-item" to="/pages/profile"
+          >My Profile</router-link
+        >
         <router-link class="dropdown-item" to="/settings/profile-settings"
           >Settings</router-link
         >
@@ -643,4 +681,3 @@ onBeforeUnmount(() => {
   </div>
   <theme-settings v-if="!shouldHideThemeSettings"></theme-settings>
 </template>
-

@@ -1,25 +1,24 @@
-
 <script setup>
-import { ref } from 'vue';
-import { useTaskStore } from '@/stores/taskStore';
-    const taskStore = useTaskStore()
-    const title = ref('') ;
-    const description = ref('') ;
+import { ref } from "vue";
+import { useTaskStore } from "@/old_stores/taskStore";
+const taskStore = useTaskStore();
+const title = ref("");
+const description = ref("");
 
-    const create = async () =>{
-        if(!title.value.trim()){
-            alert("Please enter Task title") ;            
-            return ;
-        }
-        await taskStore.createTask({
-            title       : title.value,
-            description : description.value,
-            status      : 'new'
-        });
+const create = async () => {
+  if (!title.value.trim()) {
+    alert("Please enter Task title");
+    return;
+  }
+  await taskStore.createTask({
+    title: title.value,
+    description: description.value,
+    status: "new"
+  });
 
-        title.value         = '';
-        description.value   = '' ;
-    }
+  title.value = "";
+  description.value = "";
+};
 </script>
 
 <template>
@@ -41,10 +40,7 @@ import { useTaskStore } from '@/stores/taskStore';
               type="text"
               v-model="description"
             ></textarea
-            ><br /><button
-             @click="create"
-              class="btn float-end btn-primary"
-            >
+            ><br /><button @click="create" class="btn float-end btn-primary">
               Create
             </button>
           </div>

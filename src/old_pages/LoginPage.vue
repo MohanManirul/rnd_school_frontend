@@ -1,24 +1,22 @@
 <script setup>
-import { useAuthStore } from '@/stores/authStore';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useAuthStore } from "@/old_stores/authStore";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-  const email = ref('');
-  const password = ref('');
-  const router = useRouter();
-  const authStore = useAuthStore() ;
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+const authStore = useAuthStore();
 
-
-const login = async() => {
-  
+const login = async () => {
   const success = await authStore.login({
-      email     : email.value,
-      password  : password.value
-  }) ;
-  if(success){
-    router.push('dashboard') ;
+    email: email.value,
+    password: password.value
+  });
+  if (success) {
+    router.push("dashboard");
   }
-}
+};
 </script>
 
 <template>
@@ -27,7 +25,7 @@ const login = async() => {
       <div class="col-md-7 col-lg-6 center-screen">
         <div class="card w-90 p-4">
           <div class="card-body">
-            <form @submit.prevent = 'login'>
+            <form @submit.prevent="login">
               <h4>SIGN IN</h4>
               <br />
               <input
@@ -54,7 +52,7 @@ const login = async() => {
             <div class="float-end mt-3">
               <span>
                 <RouterLink
-                 to="register"
+                  to="register"
                   class="text-center ms-3 h6 animated fadeInUp"
                   >Sign Up
                 </RouterLink>

@@ -1,11 +1,11 @@
 <script setup>
-import { useTaskStore } from '@/stores/taskStore';
-import { onBeforeMount } from 'vue';
-import ShimmerLoader from '../ShimmerLoader.vue'
-    const taskStore = useTaskStore();
-    onBeforeMount(async()=>{
-        await taskStore.fetchTaskByStatus('in_progress');
-    })
+import { useTaskStore } from "@/old_stores/taskStore";
+import { onBeforeMount } from "vue";
+import ShimmerLoader from "../ShimmerLoader.vue";
+const taskStore = useTaskStore();
+onBeforeMount(async () => {
+  await taskStore.fetchTaskByStatus("in_progress");
+});
 </script>
 
 <template>

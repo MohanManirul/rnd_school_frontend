@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <div>
     <h3>Sidebar Data</h3>
     <pre>{{ formattedSidebar }}</pre>
   </div>
@@ -15,12 +15,17 @@
             :class="{ active: isMenuActive(menu) }"
             :style="{
               display:
-                menu.menuValue === 'Authentication' || menu.menuValue === 'Forms'
+                menu.menuValue === 'Authentication' ||
+                menu.menuValue === 'Forms'
                   ? 'none'
-                  : 'block',
+                  : 'block'
             }"
           >
-            <router-link v-if="menu.route" :to="menu.route" @click="expandSubMenus(menu)">
+            <router-link
+              v-if="menu.route"
+              :to="menu.route"
+              @click="expandSubMenus(menu)"
+            >
               <i :class="'ti ' + menu.icon"></i>
               <span>{{ menu.menuValue }}</span>
             </router-link>
@@ -35,14 +40,19 @@
               @click="expandSubMenus(menu)"
               :class="{
                 subdrop: menu.showSubRoute,
-                active: route_array[1] === menu.active_link,
+                active: route_array[1] === menu.active_link
               }"
             >
               <i :class="'ti ' + menu.icon"></i>
               <span>{{ menu.menuValue }}</span>
               <span class="menu-arrow"></span>
             </a>
-            <ul :class="{ 'd-block': menu.showSubRoute, 'd-none': !menu.showSubRoute }">
+            <ul
+              :class="{
+                'd-block': menu.showSubRoute,
+                'd-none': !menu.showSubRoute
+              }"
+            >
               <li v-for="subMenu in menu.subMenus" :key="subMenu.menuValue">
                 <router-link
                   v-if="subMenu.route"
@@ -55,7 +65,7 @@
                       currentPath === subMenu.active_link3 ||
                       currentPath === subMenu.active_link4 ||
                       currentPath === subMenu.active_link5 ||
-                      currentPath === subMenu.active_link6,
+                      currentPath === subMenu.active_link6
                   }"
                 >
                   {{ subMenu.menuValue }}
@@ -68,7 +78,7 @@
                   v-if="subMenu.subMenusTwo"
                   :class="{
                     'd-block': subMenu.showSubRoute,
-                    'd-none': !subMenu.showSubRoute,
+                    'd-none': !subMenu.showSubRoute
                   }"
                 >
                   <li
@@ -78,7 +88,9 @@
                     <router-link
                       v-if="subSubMenu.route"
                       :to="subSubMenu.route"
-                      :class="{ active: currentPath === subSubMenu.active_link }"
+                      :class="{
+                        active: currentPath === subSubMenu.active_link
+                      }"
                     >
                       {{ subSubMenu.menuValue }}
                     </router-link>
@@ -99,7 +111,7 @@
                 subdrop:
                   menu.menuValue === 'Application' ||
                   (menu.menuValue === 'Forms' && isMenuActive(menu)),
-                active: isMenuActive(menu),
+                active: isMenuActive(menu)
               }"
             >
               <i :class="'ti ' + menu.icon"></i>
@@ -110,14 +122,19 @@
             <ul
               :class="{
                 'd-block': openMenuItem === menu,
-                'd-none': openMenuItem !== menu,
+                'd-none': openMenuItem !== menu
               }"
             >
-              <template v-for="subMenus in menu.subMenus" :key="subMenus.menuValue">
+              <template
+                v-for="subMenus in menu.subMenus"
+                :key="subMenus.menuValue"
+              >
                 <li v-if="!subMenus.customSubmenuTwo">
-                  <router-link :to="subMenus.route" @click="expandSubMenus(subMenus)">{{
-                    subMenus.menuValue
-                  }}</router-link>
+                  <router-link
+                    :to="subMenus.route"
+                    @click="expandSubMenus(subMenus)"
+                    >{{ subMenus.menuValue }}</router-link
+                  >
                 </li>
                 <template v-else-if="subMenus.customSubmenuTwo">
                   <li class="submenu">
@@ -126,7 +143,7 @@
                       @click="openSubmenuOne(subMenus)"
                       :class="{
                         subdrop: showSubRoute === subMenus,
-                        active: route_array[1] === subMenus.active_link,
+                        active: route_array[1] === subMenus.active_link
                       }"
                     >
                       {{ subMenus.menuValue }}
@@ -135,7 +152,7 @@
                     <ul
                       :class="{
                         'd-block': showSubRoute === subMenus,
-                        'd-none': showSubRoute !== subMenus,
+                        'd-none': showSubRoute !== subMenus
                       }"
                     >
                       <li
@@ -152,7 +169,6 @@
               </template>
             </ul>
           </li>
-       
         </template>
       </ul>
     </li>
@@ -163,15 +179,13 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import sideBarJson from "@/assets/json/sidebar-data.json";
-const side_bar_data = ref([]);  // initially empty
+const side_bar_data = ref([]); // initially empty
 
-console.log("sideBarJson" ,side_bar_data);
+console.log("sideBarJson", side_bar_data);
 
-
-import { useLeftSideBarStore } from "@/stores/leftSideBarData";
+import { useLeftSideBarStore } from "@/old_stores/leftSideBarData";
 
 const LeftSideBarStore = useLeftSideBarStore();
-
 
 const leftSideBarMenuSubmenu = async () => {
   const response = await LeftSideBarStore.leftSideBarData();
@@ -190,9 +204,7 @@ onMounted(() => {
 // ROUTE
 const route = useRoute();
 
-
 // REACTIVE STATES
-
 
 const openMenuItem = ref(null);
 const showSubRoute = ref(null);
@@ -296,4 +308,3 @@ onMounted(() => {
   restoreMenuState();
 });
 </script>
-

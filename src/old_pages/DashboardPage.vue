@@ -1,8 +1,7 @@
 <script setup>
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from "@/old_stores/authStore";
 
-  const authStore = useAuthStore()
- 
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -40,13 +39,11 @@ import { useAuthStore } from '@/stores/authStore';
               <i class="bi bi-person side-bar-item-icon"></i>
               <span class="side-bar-item-caption">Profile</span>
             </a>
-            <span
-              
-              class="side-bar-item"
-              style="cursor: pointer"
-            >
+            <span class="side-bar-item" style="cursor: pointer">
               <i class="bi bi-box-arrow-right side-bar-item-icon"></i>
-              <span class="side-bar-item-caption" @click="authStore.logout">Logout</span>
+              <span class="side-bar-item-caption" @click="authStore.logout"
+                >Logout</span
+              >
             </span>
           </div>
         </div>
@@ -56,31 +53,31 @@ import { useAuthStore } from '@/stores/authStore';
 
   <!-- Sidebar -->
   <div class="side-nav-open">
-    <RouterLink :to="{name:'dashboard'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'dashboard' }" class="side-bar-item mt-2">
       <i class="bi bi-speedometer2 side-bar-item-icon"></i>
       <span>Dashboard</span>
     </RouterLink>
-    <RouterLink :to="{name:'create'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'create' }" class="side-bar-item mt-2">
       <i class="bi bi-pencil-square side-bar-item-icon"></i>
       <span>Create New</span>
     </RouterLink>
-    <RouterLink :to="{name:'newtask'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'newtask' }" class="side-bar-item mt-2">
       <i class="bi bi-list-ul side-bar-item-icon"></i>
       <span>New Task</span>
     </RouterLink>
-    <RouterLink :to="{name:'inprogress'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'inprogress' }" class="side-bar-item mt-2">
       <i class="bi bi-hourglass-split side-bar-item-icon"></i>
       <span>In Progress</span>
     </RouterLink>
-    <RouterLink :to="{name:'completed'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'completed' }" class="side-bar-item mt-2">
       <i class="bi bi-check-circle side-bar-item-icon"></i>
       <span>Completed</span>
     </RouterLink>
-    <RouterLink :to="{name:'canceled'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'canceled' }" class="side-bar-item mt-2">
       <i class="bi bi-x-octagon side-bar-item-icon"></i>
       <span>Canceled</span>
     </RouterLink>
-    <RouterLink :to="{name:'trashed'}" class="side-bar-item mt-2">
+    <RouterLink :to="{ name: 'trashed' }" class="side-bar-item mt-2">
       <i class="bi bi-x-octagon side-bar-item-icon"></i>
       <span>Trashed</span>
     </RouterLink>

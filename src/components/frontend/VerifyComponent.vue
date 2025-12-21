@@ -1,45 +1,35 @@
-<script setup>
-import { ref } from 'vue';
 
 
-const email = ref('');
 
-
-const LoginClick = async() =>{
-    const success = await auth
-}
-
-</script>  
 
 <template>
-    
-  <div class="login_register_wrap section">
+    <div class="login_register_wrap section">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-6 col-md-10">
           <div class="login_wrap">
             <div class="padding_eight_all bg-white">
               <div class="heading_s1">
-                <h3>Login</h3>
+                <h3>Verification</h3>
               </div>
-              <form @submit.prevent="LoginClick">
+              <form >
                 <div class="form-group mb-3">
                   <input
-                    v-model="email"
-                    type="email"
+                     
+                    type="text"
                     required
                     class="form-control"
-                    name="email"
-                    placeholder="Your Email"
+                    name="code"
+                    placeholder="Verification Code"
                   />
                 </div>
                 <div class="form-group mb-3">
                   <button
                     type="submit"
                     class="btn btn-fill-out btn-block"
-                    name="login"
+                    name="verify"
                   >
-                    Next
+                    Confirm
                   </button>
                 </div>
               </form>
@@ -48,9 +38,5 @@ const LoginClick = async() =>{
         </div>
       </div>
     </div>
-  </div>
+    </div>
 </template>
-
-<style scoped>
-
-</style>

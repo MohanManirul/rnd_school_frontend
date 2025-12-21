@@ -1,32 +1,29 @@
 <script setup>
-import { ref } from 'vue';
-import { useAuthStore } from '../stores/authStore';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useAuthStore } from "../old_stores/authStore";
+import { useRouter } from "vue-router";
 
-  const AuthStore = useAuthStore() ;
+const AuthStore = useAuthStore();
 
-  const email             = ref('');
-  const name              = ref('') ;
-  const password          = ref('');
-  const password_confirm  = ref('');
+const email = ref("");
+const name = ref("");
+const password = ref("");
+const password_confirm = ref("");
 
-  const router = useRouter() ;
+const router = useRouter();
 
-  const registration = async() => {
-
+const registration = async () => {
   const success = await AuthStore.register({
-      email                   : email.value,
-      name                    : name.value,
-      password                : password.value,
-      password_confirmation   : password_confirm.value,
+    email: email.value,
+    name: name.value,
+    password: password.value,
+    password_confirmation: password_confirm.value
+  });
 
-    });
-
-    if(success){
-      router.push({name:'login'}) ;
-    }
-  };
-
+  if (success) {
+    router.push({ name: "login" });
+  }
+};
 </script>
 
 <template>
@@ -48,7 +45,6 @@ import { useRouter } from 'vue-router';
                       type="email"
                       name="email"
                       v-model="email"
-                      
                     />
                   </div>
                   <div class="col-md-12 p-2">
@@ -59,7 +55,6 @@ import { useRouter } from 'vue-router';
                       type="text"
                       name="name"
                       v-model="name"
-                      
                     />
                   </div>
 
@@ -71,7 +66,6 @@ import { useRouter } from 'vue-router';
                       type="password"
                       name="password"
                       v-model="password"
-                      
                     />
                   </div>
                   <div class="col-md-12 p-2">
@@ -82,7 +76,6 @@ import { useRouter } from 'vue-router';
                       type="password"
                       name="password_confirmation"
                       v-model="password_confirm"
-                      
                     />
                   </div>
                 </div>
@@ -97,7 +90,7 @@ import { useRouter } from 'vue-router';
                     <div class="float-end mt-3">
                       <span>
                         <RouterLink
-                        to="login"
+                          to="login"
                           class="text-center ms-3 h6 animated fadeInUp"
                           >Sign In
                         </RouterLink>
