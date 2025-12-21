@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("auth", () => {
   //states
   const Useremail = ref("");
   const token = ref(localStorage.getItem("token") || null);
+  const isAuthenticated = ref(localStorage.getItem("email") ?? false);
 
   //actions
   const login = async (email) => {
@@ -40,6 +41,44 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  return { token, Useremail, login };
+  // verify OTP
+  const verifyOTP = async (otp) =>{
+      // Check if Useremail is empty or undefined
+      
+      if (!Useremail.value) {
+        cogoToast.error("Email not found. Please login first.", {
+          position: "top-right"
+        });
+        return; // Exit if email is not set
+      }
+    try {
+      const res = await apiClient.post(
+        `/VerifyLogin/${Useremail.value}/${otp}`
+      );
+      console.log(res.data.data.token);
+      
+      if (res.data.message === 200) {
+        localStorage.setItem("email", Useremail.value);
+        localStorage.setItem("token", res.data.data.token);
+        isAuthenticated.value = Useremail.value;
+        cogoToast.success("Login Successfull", {
+          position: "top-right"
+        });
+        router.push("/dashboard");
+      } else {
+        cogoToast.error( "Failed to verify OTP",
+          {
+            position: "top-right"
+          }
+        );
+      }
+    } catch (error) {
+      // log the error for debugging
+      cogoToast.error("frontend catch block error", {
+        position: "top-right"
+      });
+    }
+  }
+
+  return { token, Useremail, login, verifyOTP };
 });
-localStorage.getItem("token") || null;

@@ -1,5 +1,23 @@
 
+<script setup>
+import { useAuthStore } from '@/store/authStore';
+import cogoToast from 'cogo-toast';
+import { ref } from 'vue';
+const authStore = useAuthStore();
+const code = ref('') ;
 
+const verifyLogin = async() =>{
+    if(!code.value){
+       cogoToast.error("Please enter OTP",
+          {
+            position: "top-right"
+          }
+        );
+        return ;
+    } 
+    await authStore.verifyOTP(code.value) ;
+}
+</script>
 
 
 <template>
@@ -12,10 +30,10 @@
               <div class="heading_s1">
                 <h3>Verification</h3>
               </div>
-              <form >
+              <form @submit.prevent="verifyLogin">
                 <div class="form-group mb-3">
                   <input
-                     
+                    v-model="code"
                     type="text"
                     required
                     class="form-control"
