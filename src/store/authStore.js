@@ -54,9 +54,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const res = await apiClient.post(
         `/VerifyLogin/${Useremail.value}/${otp}`
-      );
-      console.log(res.data.data.token);
-      
+      );      
       if (res.data.message === 200) {
         localStorage.setItem("email", Useremail.value);
         localStorage.setItem("token", res.data.data.token);
@@ -80,5 +78,30 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  return { token, Useremail, login, verifyOTP };
+  // logout
+  const logout = async () => {
+    try {
+      const success = await apiClient.get("/logout");
+      token.value = null;
+      localStorage.removeItem("token");
+      cogoToast.success("Logout Successfull", { position: "top-right" });
+
+      if (success) {
+        router.push({ name: "login" });
+      }
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      if (error?.message) {
+        cogoToast.error(error.message, {
+          position: "top-right"
+        });
+      }
+      return false;
+    }
+  };
+
+
+  return { token, Useremail, login, verifyOTP, isAuthenticated, logout };
 });
