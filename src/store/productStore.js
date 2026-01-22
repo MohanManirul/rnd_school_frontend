@@ -5,9 +5,12 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 export const useProductStoreStore = defineStore("productStore", () => {
-  const router = useRouter();
-
-      //actions
+  
+  const sliderItems = ref([]);
+  const sliderLoading = ref(false);
+  const sliderError = ref('');
+  
+  //actions
   const fetchCategories = async () => {
     try {
       const res = await apiClient.get('/CategoryList');   
@@ -21,7 +24,23 @@ export const useProductStoreStore = defineStore("productStore", () => {
     }
   };
 
+  const fetchSlider = async () => {
+      sliderLoading.value =true ;
+    try {
+      const res = await apiClient.get('/ListProductSlider');   
+      sliderItems.value = res?.data?.data ?? [] ;
+    } catch (error) {
+      // server related issue
+      sliderItems.value = [];
+      sliderError.value = 'Failed to load sliders'
+      console.error(error.message); // log the error for debugging
+      
+    }finally{
+       sliderLoading.value = false ;
+    }
+  };
 
 
-  return { fetchCategories };
+
+  return { fetchCategories , sliderItems , fetchSlider , sliderLoading , sliderError };
 });
