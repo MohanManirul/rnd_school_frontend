@@ -1,11 +1,17 @@
 <script setup>
 import { useAuthStore } from '@/store/authStore';
-import { computed } from 'vue';
+import { useProductStoreStore } from '@/store/productStore';
+import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isAuthenticated);
-
+const productStore = useProductStoreStore();
+const categories = ref([]) ;
+ 
+onMounted(async ()=>{
+    categories.value = await productStore.fetchCategories();        
+})
 
 </script>
 
@@ -77,11 +83,8 @@ const isLoggedIn = computed(() => authStore.isAuthenticated);
                                 <a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Products</a>
                                 <div class="dropdown-menu">
                                     <ul>
-                                        <li>
-                                            <a class="dropdown-item nav-link nav_item" href="/ListProductByCategory/1">Category 1</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item nav-link nav_item" href="/ListProductByCategory/2">Category 2</a>
+                                        <li v-for="category in categories" :key="category.id">
+                                            <a class="dropdown-item nav-link nav_item" href="/ListProductByCategory/1">{{ category.categoryName }}</a>
                                         </li>
                                         <!-- Add more categories here if needed -->
                                     </ul>
