@@ -1,8 +1,8 @@
 <script setup>
-   import { useProductStoreStore } from '@/store/productStore';
+   import { useProductStore } from '@/store/productStore';
    import {  onBeforeMount,  ref } from 'vue';
 
-   const productStore = useProductStoreStore();
+   const productStore = useProductStore();
    console.log(productStore);
    
    onBeforeMount(async ()=>{

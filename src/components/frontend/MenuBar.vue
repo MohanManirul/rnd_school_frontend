@@ -1,12 +1,12 @@
 <script setup>
 import { useAuthStore } from '@/store/authStore';
-import { useProductStoreStore } from '@/store/productStore';
+import { useProductStore } from '@/store/productStore';
 import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isAuthenticated);
-const productStore = useProductStoreStore();
+const productStore = useProductStore();
 const categories = ref([]) ;
  
 onMounted(async ()=>{
