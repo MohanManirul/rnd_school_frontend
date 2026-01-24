@@ -28,7 +28,8 @@ export const useProductStoreStore = defineStore("productStore", () => {
       sliderLoading.value =true ;
     try {
       const res = await apiClient.get('/ListProductSlider');   
-      sliderItems.value = res?.data?.data ?? [] ;
+           
+      sliderItems.value = res?.data?.data?? [] ;
     } catch (error) {
       // server related issue
       sliderItems.value = [];

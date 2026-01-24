@@ -3,7 +3,7 @@ import App from './App.vue'
 
 import { createPinia } from "pinia";
 const pinia = createPinia();
-
+import 'bootstrap' ;
 import "@/assets/bootstrap/css/bootstrap.min.css";
 import "@/assets/css/animate.css";
 import "@/assets/css/all.min.css";
