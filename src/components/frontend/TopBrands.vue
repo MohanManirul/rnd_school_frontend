@@ -6,6 +6,9 @@ import { onBeforeMount } from "vue";
    onBeforeMount(async()=>{
       await store.fetchTopBrands() ;
    }) ;
+
+
+
 </script>
 
 

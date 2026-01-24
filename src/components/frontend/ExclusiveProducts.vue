@@ -75,6 +75,7 @@ onBeforeMount(async () => {
           </div>
 
           <!-- Panes (one loop, no repetition) -->
+           
           <div
             v-for="tab in tabs"
             :key="tab.name + '-pane'"
