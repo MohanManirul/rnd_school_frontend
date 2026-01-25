@@ -56,13 +56,13 @@ import { onBeforeMount } from "vue";
         <div v-for="brand in store.topBrandItems" :key="brand.id"  class="p-2 col-6 col-md-4 col-lg-2">
           <div class="item">
             <div class="Brands_box">
-              <a href="/by-brand?id=1">
+              <router-link :to="`/by-brand?id=${brand.id}`">
                 <img
                   :src="brand.brandImg"
                   :alt="brand.brandName"
                 />
                 <span>{{ brand.brandName }}</span>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>

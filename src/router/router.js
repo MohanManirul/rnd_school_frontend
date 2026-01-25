@@ -1,8 +1,9 @@
-import HomePage from "@/Pages/HomePage.vue";
-import LoginPage from "@/Pages/LoginPage.vue";
+import HomePage from "@/pages/HomePage.vue";
+import LoginPage from "@/pages/LoginPage.vue";
 import ProductByCategoryPage from "@/pages/ProductByCategoryPage.vue";
-import VerifyPage from "@/Pages/VerifyPage.vue";
+import VerifyPage from "@/pages/VerifyPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import  ProductByBrandPage  from '@/pages/ProductByBrandPage.vue';
 
 
 
@@ -28,6 +29,11 @@ const routes = [
     path: "/by-category",
     component: ProductByCategoryPage,
     name: "ProductByCategoryPage"
+  },
+  {
+    path: "/by-brand",
+    component: ProductByBrandPage,
+    name: "ProductByBrandPage"
   }
 ];
 

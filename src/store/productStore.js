@@ -34,6 +34,12 @@ export const useProductStore = defineStore("productStore", () => {
   const categoryLoading = ref(false);
   const categoryError = ref(false);
 
+  // states for brand page
+  const brandProducts = ref([]) ;
+  const brandName = ref('') ;
+  const brandLoading = ref(false);
+  const brandError = ref(false);
+
 
   //actions
   const fetchCategories = async () => {
@@ -169,7 +175,28 @@ export const useProductStore = defineStore("productStore", () => {
       categoryLoading.value = false;
     }
   }
- 
+
+  // load products for single brand page
+  const fetchProductByBrand = async(brandId)=>{
+    brandLoading.value = true ;
+    try{
+      const brandRes = await apiClient.get("/BrandList");    
+      const brands = brandRes?.data?.data?? [];
+      const found = brands.find((c)=>c.id == brandId );
+      brandName.value = found?.brandName || "";      
+      const res = await apiClient.get(`/ListProductByBrand/${brandId}`); 
+      brandProducts.value = res.data?.data ?? [] ;
+    }catch(error){
+      // server related issue
+      brandProducts.value = [];
+      brandError.value = "Failed to load products";
+      console.error(error.message); // log the error for debugging
+    } finally {
+      brandLoading.value = false;
+    }
+  }
+
+
   return {
     fetchCategories,
     sliderItems,
@@ -197,11 +224,20 @@ export const useProductStore = defineStore("productStore", () => {
     loading,
     loadProductsByTab,
     fetchProductsByRemark,
+
     // products by category
     categoryProducts,
     categoryName,
     categoryLoading,
     categoryError,
-    fetchProductByCategory
+    fetchProductByCategory,
+
+    // products by brand
+    brandProducts,
+    brandName,
+    brandLoading,
+    brandError,
+    fetchProductByBrand
+
   };
 });
