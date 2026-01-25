@@ -602,7 +602,6 @@ import { planCharts, attendChartsOne } from "./data";
 
 const value = ref();
 const onPanelChange = (value, mode) => {
-  console.log(value, mode);
 };
 
 export default {

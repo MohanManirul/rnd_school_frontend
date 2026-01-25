@@ -365,7 +365,6 @@ import { ref } from "vue";
 const value = ref();
 const valueOne = ref();
 const onPanelChange = (value, mode) => {
-  console.log(value, mode);
 }
 import { attendCharts } from "./data";
 export default {

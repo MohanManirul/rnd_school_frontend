@@ -40,6 +40,14 @@ export const useProductStore = defineStore("productStore", () => {
   const brandLoading = ref(false);
   const brandError = ref(false);
 
+  // states for single product
+  const productDetails = ref(null) ;
+  const productImages = ref([]); ;
+  const productSizes = ref([]);
+  const productColors = ref([]);
+  const detailsLoading = ref(false);
+  const detailsError = ref(false);
+
 
   //actions
   const fetchCategories = async () => {
@@ -63,7 +71,6 @@ export const useProductStore = defineStore("productStore", () => {
       const res = await apiClient.get("/CategoryList");
 
       topCategoriesItems.value = res?.data?.data ?? [];
-      console.log(topCategoriesItems);
     } catch (error) {
       // server related issue
       topCategoriesItems.value = [];
@@ -82,7 +89,6 @@ export const useProductStore = defineStore("productStore", () => {
       const res = await apiClient.get("/BrandList");
 
       topBrandItems.value = res?.data?.data ?? [];
-      console.log(topBrandItems);
     } catch (error) {
       // server related issue
       topBrandItems.value = [];
@@ -196,6 +202,50 @@ export const useProductStore = defineStore("productStore", () => {
     }
   }
 
+    // const productDetails = ref(null);
+    // const productImages = ref([]);
+    // const productSizes = ref([]);
+    // const productColors = ref([]);
+    // const detailsLoading = ref(false);
+    // const detailsError = ref(false);
+
+  // fetch single product details by id
+  const fetchProductDetailsById = async(id)=>{
+    detailsLoading.value = true;    
+    try{
+      // const brandRes = await apiClient.get("/BrandList");    
+      // const brands = brandRes?.data?.data?? [];
+      // const found = brands.find((c)=>c.id == brandId );
+      // brandName.value = found?.brandName || "";      
+      const res = await apiClient.get(`/ProductDetailsById/${id}`); 
+     
+      const list = res?.data?.data || [];
+      const row = list[0] || null ;
+      productDetails.value = row;
+      productImages.value = [row?.img1, row?.img2, row?.img3, row?.img4].filter(Boolean) ;
+      productSizes.value = (row?.size || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      productColors.value = (row?.color || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+    }catch(error){
+      // server related issue
+      productDetails.value = null;
+      productImages.value = [];
+      productSizes.value = [];
+      productColors.value = [];
+      detailsError.value = "Failed to load products";
+      console.error(error.message); // log the error for debugging
+    } finally {
+      detailsLoading.value = false;
+    }
+  }
+
 
   return {
     fetchCategories,
@@ -237,7 +287,15 @@ export const useProductStore = defineStore("productStore", () => {
     brandName,
     brandLoading,
     brandError,
-    fetchProductByBrand
+    fetchProductByBrand,
 
+    //single product details
+    productDetails,
+    productImages,
+    productSizes,
+    productColors,
+    detailsError,
+    fetchProductDetailsById,
   };
 });
+ 

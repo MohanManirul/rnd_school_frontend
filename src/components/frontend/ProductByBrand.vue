@@ -6,20 +6,13 @@ const route = useRoute();
 
   const store = useProductStore();
   const fetchCurrentBrand = async () =>{
-    const brandId = route.query.id ;  
-    console.log(brandId);
-       
+    const brandId = route.query.id ;        
     await store.fetchProductByBrand(brandId) ;
   }
 
 watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
 
 </script>
-   <!-- brandProducts,
-    brandName,
-    brandLoading,
-    brandError,
-    fetchProductByBrand -->
 
 <template>
 <!-- Breadcrumb -->
@@ -69,7 +62,7 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
                </div>
             </div>
     <!-- Product Grid -->
-    <div id="byBrandList" class="row">
+    <div v-else id="byBrandList" class="row">
 
       <!-- Product Item -->
       <div v-for="item in store.brandProducts" :key="item.id"  class="col-lg-3 col-md-4 col-6">
@@ -92,7 +85,7 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
               </ul>
             </div>
           </div>
-
+ 
           <div class="product_info">
             <h6 class="product_title">
               <router-link :to='`/details?id=${item.id}`'>{{ item.title }}</router-link>
@@ -101,10 +94,10 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
             <div class="product_price">
               <span class="price">$ {{ item.price }}</span>
             </div>
-
+ 
             <div class="rating_wrap">
               <div class="rating">
-                <div class="product_rate" style="width: 80%;"></div>
+                <div class="product_rate"  :style="{width: (item.star || 0)+ '%'}"></div>
               </div>
             </div>
           </div>

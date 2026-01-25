@@ -57,7 +57,6 @@ export const useTaskStore = defineStore("task", () => {
 
       tasks.value = res.data.data.data ?? res.data.data ?? [];
     } catch (error) {
-      console.log("Failed to fetched trashed tasks", error);
       cogoToast.error("Failed to load trashed tasks");
     } finally {
       loading.value = false;

@@ -3,12 +3,10 @@
    import {  onBeforeMount,  ref } from 'vue';
 
    const productStore = useProductStore();
-   console.log(productStore);
    
    onBeforeMount(async ()=>{
       await productStore.fetchSlider();        
    })
-   console.log(productStore.sliderItems);
    
 // fetched data before component loads
 </script>

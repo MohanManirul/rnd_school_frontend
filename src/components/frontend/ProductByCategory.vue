@@ -7,8 +7,7 @@ const store =  useProductStore();
 const route = useRoute();
 
 const fetchCurrentCategory = async () =>{
-    const categoryId = route.query.id ;
-     
+    const categoryId = route.query.id ;     
     await store.fetchProductByCategory(categoryId) ;
 }
 
@@ -72,7 +71,7 @@ watch(() => route.query.id, fetchCurrentCategory, { immediate: true })
                </div>
             </div>
 
-            <!-- empty / error -->
+            <!-- empty -->
             <div v-else-if="store.categoryProducts.length === 0" class="carousel-item active">
                <div class="d-flex align-item-center justify-content-center" style="height:420px">
                   <div class="text-center">
@@ -80,7 +79,7 @@ watch(() => route.query.id, fetchCurrentCategory, { immediate: true })
                   </div>
                </div>
             </div>
-
+ 
         <div v-else class="row">
         <!-- Product -->
         <div v-for="item in store.categoryProducts" :key="item.id" class="col-lg-3 col-md-4 col-6">

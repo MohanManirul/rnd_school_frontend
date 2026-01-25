@@ -22,8 +22,6 @@ export const useAuthStore = defineStore("auth", () => {
         },
         { withCredentials: true }
       );
-
-      console.log("store-res", res); // debug friendly
       // res.data.data এ token আছে
       user.value = { email: values.email }; // বা API থেকে যদি user info আসে
       return { success: true };

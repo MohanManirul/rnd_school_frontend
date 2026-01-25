@@ -16,8 +16,6 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (email) => {
     try {
       const res = await apiClient.get(`/UserLogin/${email}`);
-      console.log(res.data.message);
-
       if (res.data.message === 200) {
         Useremail.value = email;
         localStorage.setItem("email", email);
@@ -92,7 +90,7 @@ export const useAuthStore = defineStore("auth", () => {
 
       return true;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       if (error?.message) {
         cogoToast.error(error.message, {
           position: "top-right"

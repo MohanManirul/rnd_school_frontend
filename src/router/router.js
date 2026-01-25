@@ -1,6 +1,7 @@
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import ProductByCategoryPage from "@/pages/ProductByCategoryPage.vue";
+import ProductDetailsPage from "@/pages/ProductDetailsPage.vue";
 import VerifyPage from "@/pages/VerifyPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import  ProductByBrandPage  from '@/pages/ProductByBrandPage.vue';
@@ -34,6 +35,11 @@ const routes = [
     path: "/by-brand",
     component: ProductByBrandPage,
     name: "ProductByBrandPage"
+  },
+  {
+    path: "/details",
+    component: ProductDetailsPage,
+    name: "ProductDetailsPage"
   }
 ];
 

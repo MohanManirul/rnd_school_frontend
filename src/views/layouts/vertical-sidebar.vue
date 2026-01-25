@@ -181,8 +181,6 @@ import { useRoute } from "vue-router";
 import sideBarJson from "@/assets/json/sidebar-data.json";
 const side_bar_data = ref([]); // initially empty
 
-console.log("sideBarJson", side_bar_data);
-
 import { useLeftSideBarStore } from "@/old_stores/leftSideBarData";
 
 const LeftSideBarStore = useLeftSideBarStore();

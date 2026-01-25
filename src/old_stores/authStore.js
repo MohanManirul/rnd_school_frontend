@@ -51,13 +51,12 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (credentials) => {
     try {
       const res = await apiClient.post("/login", credentials);
-      console.log(res);
+    
       token.value = res.data.data.token;
       localStorage.setItem("token", token.value);
       cogoToast.success("Login Successfull", { position: "top-right" });
       return true;
     } catch (error) {
-      console.log(error);
       //   validation error
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
@@ -96,7 +95,6 @@ export const useAuthStore = defineStore("auth", () => {
 
       return true;
     } catch (error) {
-      console.log(error);
       if (error?.message) {
         cogoToast.error(error.message, {
           position: "top-right"

@@ -523,7 +523,6 @@ import { studentChart, teacherChart, staffChart, classChart } from "./data";
 import { ref } from "vue";
 const value = ref();
 const onPanelChange = (value, mode) => {
-  console.log(value, mode);
 };
 
 export default {
