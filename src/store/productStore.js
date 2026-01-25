@@ -246,6 +246,25 @@ export const useProductStore = defineStore("productStore", () => {
     }
   }
 
+  const addToCart = async ({product_id,color,size,qty}) =>{
+      try{        
+          await apiClient.post("/CreateCartList", {
+            product_id,
+            color,
+            size,
+            qty
+          });
+          cogoToast.success("Product added to cart", {
+            position: "top-right"
+          });
+      }catch(error){
+        console.log(error.message);
+        cogoToast.error("Product not added to cart", {
+          position: "top-right",
+        });
+        
+      }
+  }
 
   return {
     fetchCategories,
@@ -296,6 +315,9 @@ export const useProductStore = defineStore("productStore", () => {
     productColors,
     detailsError,
     fetchProductDetailsById,
+
+    // add to cart
+    addToCart,
   };
 });
  

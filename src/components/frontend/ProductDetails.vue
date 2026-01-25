@@ -1,5 +1,6 @@
 <script setup>
 import { useProductStore } from "@/store/productStore";
+import cogoToast from "cogo-toast";
 import { onBeforeMount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
@@ -12,14 +13,19 @@ import { useRoute } from "vue-router";
  const selectedColor  = ref('');
  const quantity       = ref(1) ;
 
- // quantity increment
-const incrementQty = () =>{
-  quantity.value++ ;
-}
- // quantity deccrement
-const decrementQty = () =>{
-  quantity.value-- ;
-}
+const decrementQty = () => {
+  if (quantity.value > 1) quantity.value--;
+};
+
+const maxQty = 10;
+
+const incrementQty = () => {  
+  if (quantity.value < maxQty) quantity.value++; 
+};
+
+watch(quantity, (val) => {
+  if (val < 1) quantity.value = 1;
+});
 
 //load product details and reviews
 const loadAll = async ()=>{
@@ -34,7 +40,30 @@ onBeforeMount(async()=>{
 
 watch(()=>route.query.id , loadAll);
 
-console.log(store.productColors);
+// add to cart
+ 
+const onAddToCart = async () =>{
+
+  if( !selectedSize.value ) return cogoToast.error('Please select a size', {
+            position: "top-right"
+          }) ;
+  if( !selectedColor.value ) return cogoToast.error('Please select a color', {
+            position: "top-right"
+          }) ;
+  if( !quantity.value || quantity.value < 1 ) return cogoToast.error('Please select a quantity', {
+            position: "top-right"
+          }) ;
+
+  const id = route.query.id ;
+  await store.addToCart({
+    product_id : id ,
+    size      : selectedSize.value ,
+    color     : selectedColor.value ,
+    qty  : quantity.value ,
+  });
+
+}
+
 
 </script>
 
@@ -109,15 +138,15 @@ console.log(store.productColors);
 
           <!-- Size -->
           <label class="form-label mt-3">Size</label>
-          <select class="form-select">
-            <option>Choose Size</option>
+          <select class="form-select" v-model="selectedSize">
+            <option selected disabled value="">Choose Size</option>
             <option v-for="s in store.productSizes" :key="s" :value='s' >{{ s }}</option>
           </select>
 
           <!-- Color -->
           <label class="form-label mt-3">Color</label>
-          <select class="form-select">
-            <option>Choose Color</option>
+          <select class="form-select" v-model="selectedColor">
+            <option selected disabled value="">Choose Color</option>
             <option v-for="c in store.productColors" :key="c" :value='c' >{{ c }}</option>
           </select>
 
@@ -126,21 +155,21 @@ console.log(store.productColors);
           <div class="cart_extra">
             <div class="cart-product-quantity">
               <div class="quantity">
-                <input type="button" value="-" class="minus" />
+                <input type="button" value="-" class="minus" @click="decrementQty" />
                 <input
                   type="text"
                   name="quantity"
                   title="Qty"
                   class="qty"
                   size="4"
-                  value="1"
+                  v-model="quantity"
                 />
-                <input type="button" value="+" class="plus" />
+                <input type="button" value="+" class="plus"  @click="incrementQty"/>
               </div>
             </div>
 
             <div class="cart_btn">
-              <button class="btn btn-fill-out btn-addtocart" type="button">
+              <button class="btn btn-fill-out btn-addtocart" type="button" @click="onAddToCart">
                 <i class="icon-basket-loaded"></i> Add to cart
               </button>
               <button class="btn btn-link add_wishlist" type="button">
@@ -155,8 +184,7 @@ console.log(store.productColors);
           <div class="mt-3">
             <h5>Description</h5>
             <p>
-              This is a long product description. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit.
+              {{ store.productDetails?.des }}
             </p>
           </div>
         </div>
