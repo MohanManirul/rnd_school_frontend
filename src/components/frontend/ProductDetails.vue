@@ -3,7 +3,7 @@ import { useProductStore } from "@/store/productStore";
 import cogoToast from "cogo-toast";
 import { onBeforeMount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
+import ProductSpecification from '@/components/frontend/ProductSpecification.vue' ;
  const store = useProductStore();
  const route = useRoute();
 
@@ -192,15 +192,7 @@ const onAddToCart = async () =>{
     </div>
 
     <!-- Product Specification -->
-    <div class="product-specification mt-5">
-      <h4>Specifications</h4>
-      <ul>
-        <li>Material: Example Material</li>
-        <li>Dimensions: 10 x 20 x 5 cm</li>
-        <li>Weight: 500g</li>
-        <li>Model: ABC-123</li>
-      </ul>
-    </div>
+    <ProductSpecification />
 
   </div>
 </div>
