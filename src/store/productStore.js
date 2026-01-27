@@ -48,7 +48,11 @@ export const useProductStore = defineStore("productStore", () => {
   const detailsLoading = ref(false);
   const detailsError = ref(false);
 
-
+  //states for reviews
+  const reviews = ref([]) ;
+  const reviewsLoading = ref(false);
+  const reviewsError = ref('');
+  
   //actions
   const fetchCategories = async () => {
     try {
@@ -266,6 +270,28 @@ export const useProductStore = defineStore("productStore", () => {
       }
   }
 
+  // reviews by products
+  const fetchReviewsByProduct = async (id) =>{
+    if(!id){
+      reviewsError.value = 'Invalid Product.' ;
+      reviews.value = [] ;
+      return ;
+    }
+
+    reviewsLoading.value  = true ;
+    reviewsError.value    = '' ;
+
+    try{
+      const res = await apiClient.get(`/ListReviewByProduct/${id}`);
+      reviews.value = res?.data?.data || [] ;
+      // return res?.data?.data || [];
+    }catch(error){
+      console.log(error.message);
+      
+    }
+
+  }
+
   return {
     fetchCategories,
     sliderItems,
@@ -318,6 +344,12 @@ export const useProductStore = defineStore("productStore", () => {
 
     // add to cart
     addToCart,
+
+    // reviews states
+    reviews,
+    reviewsLoading,
+    reviewsError,
+    fetchReviewsByProduct
   };
 });
  
