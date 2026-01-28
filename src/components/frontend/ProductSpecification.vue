@@ -1,10 +1,10 @@
 <script setup>
 import { useProductStore } from "@/store/productStore";
-import { onBeforeMount } from "vue";
+import { onBeforeMount , ref } from "vue";
 import { useRoute } from "vue-router";
 
   const store = useProductStore();
-  const route =useRoute() ;
+  const route = useRoute() ;
   const productId = route.query.id ;
 
   onBeforeMount(async()=>{
@@ -13,6 +13,25 @@ import { useRoute } from "vue-router";
   // console.log(data);
   });
   
+  // add review
+  const reviewText = ref('');
+  const reviewScore = ref('');
+
+  const onAddReview = async () =>{
+    if(!reviewText.value || !reviewScore ){
+      return alert("Review text and score required");
+    }
+    await store.createReview({
+
+        product_id : productId,
+        description : reviewText.value,
+        rating : reviewScore.value
+
+    });
+    reviewText.value  = ''  ;
+    reviewScore.value = ''  ;
+  } 
+
 </script>
 
 
@@ -124,7 +143,7 @@ import { useRoute } from "vue-router";
           >
             <label class="form-label">Write Your Review</label>
             <textarea
-               
+               v-model="reviewText"
               class="form-control form-control-sm"
               rows="5"
               placeholder="Your Review"
@@ -132,14 +151,16 @@ import { useRoute } from "vue-router";
 
             <label class="form-label mt-2">Rating Score</label>
             <input
-               
+              v-model="reviewScore"
               min="1"
               max="10"
               type="number"
               class="form-control-sm form-control"
             />
 
-            <button class="btn btn-danger mt-3 btn-sm">
+            <button
+              @click="onAddReview"
+            class="btn btn-danger mt-3 btn-sm">
               Submit
             </button>
           </div>

@@ -29,30 +29,30 @@ export const useProductStore = defineStore("productStore", () => {
   const loading = ref(false);
 
   // states for category page
-  const categoryProducts = ref([]) ;
-  const categoryName = ref('') ;
+  const categoryProducts = ref([]);
+  const categoryName = ref("");
   const categoryLoading = ref(false);
   const categoryError = ref(false);
 
   // states for brand page
-  const brandProducts = ref([]) ;
-  const brandName = ref('') ;
+  const brandProducts = ref([]);
+  const brandName = ref("");
   const brandLoading = ref(false);
   const brandError = ref(false);
 
   // states for single product
-  const productDetails = ref(null) ;
-  const productImages = ref([]); ;
+  const productDetails = ref(null);
+  const productImages = ref([]);
   const productSizes = ref([]);
   const productColors = ref([]);
   const detailsLoading = ref(false);
   const detailsError = ref(false);
 
   //states for reviews
-  const reviews = ref([]) ;
+  const reviews = ref([]);
   const reviewsLoading = ref(false);
-  const reviewsError = ref('');
-  
+  const reviewsError = ref("");
+
   //actions
   const fetchCategories = async () => {
     try {
@@ -166,17 +166,17 @@ export const useProductStore = defineStore("productStore", () => {
   };
 
   // load products for single category page
-  const fetchProductByCategory = async(categoryId)=>{
-    categoryLoading.value = true ;
-    try{
-      const categoryRes = await apiClient.get('CategoryList');    
-      const categories = categoryRes?.data?.data?? [];
-      const found = categories.find((c)=>c.id == categoryId );
-      categoryName.value = found?.categoryName || "";      
-      const res = await apiClient.get(`ListProductByCategory/${categoryId}`);   
-      
-      categoryProducts.value = res.data?.data ?? [] ;
-    }catch(error){
+  const fetchProductByCategory = async (categoryId) => {
+    categoryLoading.value = true;
+    try {
+      const categoryRes = await apiClient.get("CategoryList");
+      const categories = categoryRes?.data?.data ?? [];
+      const found = categories.find((c) => c.id == categoryId);
+      categoryName.value = found?.categoryName || "";
+      const res = await apiClient.get(`ListProductByCategory/${categoryId}`);
+
+      categoryProducts.value = res.data?.data ?? [];
+    } catch (error) {
       // server related issue
       categoryProducts.value = [];
       categoryError.value = "Failed to load products";
@@ -184,19 +184,19 @@ export const useProductStore = defineStore("productStore", () => {
     } finally {
       categoryLoading.value = false;
     }
-  }
+  };
 
   // load products for single brand page
-  const fetchProductByBrand = async(brandId)=>{
-    brandLoading.value = true ;
-    try{
-      const brandRes = await apiClient.get("/BrandList");    
-      const brands = brandRes?.data?.data?? [];
-      const found = brands.find((c)=>c.id == brandId );
-      brandName.value = found?.brandName || "";      
-      const res = await apiClient.get(`/ListProductByBrand/${brandId}`); 
-      brandProducts.value = res.data?.data ?? [] ;
-    }catch(error){
+  const fetchProductByBrand = async (brandId) => {
+    brandLoading.value = true;
+    try {
+      const brandRes = await apiClient.get("/BrandList");
+      const brands = brandRes?.data?.data ?? [];
+      const found = brands.find((c) => c.id == brandId);
+      brandName.value = found?.brandName || "";
+      const res = await apiClient.get(`/ListProductByBrand/${brandId}`);
+      brandProducts.value = res.data?.data ?? [];
+    } catch (error) {
       // server related issue
       brandProducts.value = [];
       brandError.value = "Failed to load products";
@@ -204,29 +204,31 @@ export const useProductStore = defineStore("productStore", () => {
     } finally {
       brandLoading.value = false;
     }
-  }
+  };
 
-    // const productDetails = ref(null);
-    // const productImages = ref([]);
-    // const productSizes = ref([]);
-    // const productColors = ref([]);
-    // const detailsLoading = ref(false);
-    // const detailsError = ref(false);
+  // const productDetails = ref(null);
+  // const productImages = ref([]);
+  // const productSizes = ref([]);
+  // const productColors = ref([]);
+  // const detailsLoading = ref(false);
+  // const detailsError = ref(false);
 
   // fetch single product details by id
-  const fetchProductDetailsById = async(id)=>{
-    detailsLoading.value = true;    
-    try{
-      // const brandRes = await apiClient.get("/BrandList");    
+  const fetchProductDetailsById = async (id) => {
+    detailsLoading.value = true;
+    try {
+      // const brandRes = await apiClient.get("/BrandList");
       // const brands = brandRes?.data?.data?? [];
       // const found = brands.find((c)=>c.id == brandId );
-      // brandName.value = found?.brandName || "";      
-      const res = await apiClient.get(`/ProductDetailsById/${id}`); 
-     
+      // brandName.value = found?.brandName || "";
+      const res = await apiClient.get(`/ProductDetailsById/${id}`);
+
       const list = res?.data?.data || [];
-      const row = list[0] || null ;
+      const row = list[0] || null;
       productDetails.value = row;
-      productImages.value = [row?.img1, row?.img2, row?.img3, row?.img4].filter(Boolean) ;
+      productImages.value = [row?.img1, row?.img2, row?.img3, row?.img4].filter(
+        Boolean
+      );
       productSizes.value = (row?.size || "")
         .split(",")
         .map((s) => s.trim())
@@ -236,8 +238,7 @@ export const useProductStore = defineStore("productStore", () => {
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean);
-
-    }catch(error){
+    } catch (error) {
       // server related issue
       productDetails.value = null;
       productImages.value = [];
@@ -248,49 +249,69 @@ export const useProductStore = defineStore("productStore", () => {
     } finally {
       detailsLoading.value = false;
     }
-  }
+  };
 
-  const addToCart = async ({product_id,color,size,qty}) =>{
-      try{        
-          await apiClient.post("/CreateCartList", {
-            product_id,
-            color,
-            size,
-            qty
-          });
-          cogoToast.success("Product added to cart", {
-            position: "top-right"
-          });
-      }catch(error){
-        console.log(error.message);
-        cogoToast.error("Product not added to cart", {
-          position: "top-right",
-        });
-        
-      }
-  }
+  const addToCart = async ({ product_id, color, size, qty }) => {
+    try {
+      await apiClient.post("/CreateCartList", {
+        product_id,
+        color,
+        size,
+        qty
+      });
+      cogoToast.success("Product added to cart", {
+        position: "top-right"
+      });
+    } catch (error) {
+      console.log(error.message);
+      cogoToast.error("Product not added to cart", {
+        position: "top-right"
+      });
+    }
+  };
 
   // reviews by products
-  const fetchReviewsByProduct = async (id) =>{
-    if(!id){
-      reviewsError.value = 'Invalid Product.' ;
-      reviews.value = [] ;
-      return ;
+  const fetchReviewsByProduct = async (id) => {
+    if (!id) {
+      reviewsError.value = "Invalid Product.";
+      reviews.value = [];
+      return;
     }
 
-    reviewsLoading.value  = true ;
-    reviewsError.value    = '' ;
+    reviewsLoading.value = true;
+    reviewsError.value = "";
 
-    try{
+    try {
       const res = await apiClient.get(`/ListReviewByProduct/${id}`);
-      reviews.value = res?.data?.data || [] ;
+      reviews.value = res?.data?.data || [];
       // return res?.data?.data || [];
-    }catch(error){
-      console.log(error.message);
-      
+    } catch (error) {
+      console.error("Failed to load reviews:", error.message);
+      reviews.value = [];
+      reviewsError.value = "Failed to load reviews.";
+    } finally {
+      reviewsLoading.value = false;
     }
+  };
 
-  }
+  // create review
+  const createReview = async ({ product_id, description, rating }) => {
+    try {
+      const body = { product_id, description, rating };
+      const res = await apiClient.post(`/CreateProductReview`, body);
+      cogoToast.success("Review Added");
+      await fetchReviewsByProduct(product_id);
+    } catch (error) {
+      if (
+        error?.response?.status === 401 ||
+        error?.response?.data?.status === "unauthorized"
+      ) {
+      } else {
+        console.error("Failed to add review:", error.message);
+        cogoToast.error("Failed to add review.");
+      }
+    }
+  };
 
   return {
     fetchCategories,
@@ -349,7 +370,9 @@ export const useProductStore = defineStore("productStore", () => {
     reviews,
     reviewsLoading,
     reviewsError,
-    fetchReviewsByProduct
+    fetchReviewsByProduct,
+
+    // create review
+    createReview
   };
 });
- 

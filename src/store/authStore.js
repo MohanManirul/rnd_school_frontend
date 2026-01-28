@@ -9,13 +9,13 @@ export const useAuthStore = defineStore("auth", () => {
   const router = useRouter();
   //states
   const Useremail = ref("");
-  const token = ref(localStorage.getItem("token") || null);
-  const isAuthenticated = ref(localStorage.getItem("email") ?? false);
-
+  const token = ref("");
+  const isAuthenticated = ref(localStorage.getItem("token") ?? false);
   //actions
   const login = async (email) => {
     try {
-      const res = await apiClient.get(`/UserLogin/${email}`);
+      const res = await apiClient.get(`/UserLogin/${email}`);    
+      
       if (res.data.message === 200) {
         Useremail.value = email;
         localStorage.setItem("email", email);
@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", () => {
   // verify OTP
   const verifyOTP = async (otp) =>{
       // Check if Useremail is empty or undefined
-      
+          
       if (!Useremail.value) {
         cogoToast.error("Email not found. Please login first.", {
           position: "top-right"
@@ -51,12 +51,12 @@ export const useAuthStore = defineStore("auth", () => {
       }
     try {
       const res = await apiClient.post(
-        `/VerifyLogin/${Useremail.value}/${otp}`
-      );      
+        `/VerifyLogin/${Useremail.value}/${otp}`,
+        {},
+        { withCredentials: true }
+      );  
       if (res.data.message === 200) {
-        localStorage.setItem("email", Useremail.value);
-        localStorage.setItem("token", res.data.data.token);
-        isAuthenticated.value = Useremail.value;
+        localStorage.setItem("token", res?.data?.data?.token);
         cogoToast.success("Login Successfull", {
           position: "top-right"
         });
@@ -68,7 +68,7 @@ export const useAuthStore = defineStore("auth", () => {
           }
         );
       }
-    } catch (error) {
+    } catch (error) {      
       // log the error for debugging
       cogoToast.error("frontend catch block error", {
         position: "top-right"
@@ -77,29 +77,43 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   // logout
-  const logout = async () => {
-    try {
-      const success = await apiClient.get("/logout");
-      token.value = null;
-      localStorage.removeItem("token");
-      cogoToast.success("Logout Successfull", { position: "top-right" });
+const logout = async () => {
+  try {
+    // 1️⃣ Remove from localStorage
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
 
-      if (success) {
-        router.push({ name: "login" });
-      }
+    // 2️⃣ Reset reactive token value
+    token.value = null;
 
-      return true;
-    } catch (error) {
-      console.log(error.message);
-      if (error?.message) {
-        cogoToast.error(error.message, {
-          position: "top-right"
-        });
-      }
-      return false;
-    }
+    // 3️⃣ Show success toast
+    cogoToast.success("Logout Successful", { position: "top-right" });
+
+    // 4️⃣ Redirect to login
+    router.push({ name: "login" });
+
+    return true;
+  } catch (error) {
+    console.log(error?.message);
+
+    // Show error toast
+    cogoToast.error(error?.message || "Logout Failed", {
+      position: "top-right"
+    });
+
+    return false;
+  }
+};
+
+
+
+
+
+  return {
+    Useremail,
+    login,
+    verifyOTP,
+    isAuthenticated,
+    logout
   };
-
-
-  return { token, Useremail, login, verifyOTP, isAuthenticated, logout };
 });
