@@ -68,19 +68,19 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
       <div v-for="item in store.brandProducts" :key="item.id"  class="col-lg-3 col-md-4 col-6">
         <div class="product">
           <div class="product_img">
-            <a href="/details.html">
+            <router-link :to='`/details?id=${item.id}`'>
               <img
                 :src="item.image"
                 :alt="item.title"
               />
-            </a>
+            </router-link>
 
             <div class="product_action_box">
               <ul class="list_none pr_action_btn">
                 <li>
-                  <a href="/details.html">
+                  <router-link :to='`/details?id=${item.id}`'>
                     <i class="icon-magnifier-add"></i>
-                  </a>
+                  </router-link>
                 </li>
               </ul>
             </div>
