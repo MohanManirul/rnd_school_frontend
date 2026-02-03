@@ -128,6 +128,8 @@ const onAddToCart = async () =>{
           <div class="product_description">
             <h4 class="product_title">{{ store.productDetails?.product?.title }}</h4>
             <h1 class="price">$ {{ store.productDetails?.product?.price }}</h1>
+            <h3 >Brand : {{ store.productDetails?.product?.brand?.brandName }}</h3>
+            <h3 >Category : {{ store.productDetails?.product?.category?.categoryName }}</h3>
           </div>
 
           <div>

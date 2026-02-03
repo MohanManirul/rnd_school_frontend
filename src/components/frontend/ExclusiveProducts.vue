@@ -116,12 +116,12 @@ onBeforeMount(async () => {
                     <div class="product_action_box">
                       <ul class="list_none pr_action_btn">
                         <li>
-                          <!-- <router-link
+                          <router-link
                             :to="`/details?id=${product.id}`"
                             class="popup-ajax"
-                          > -->
+                          >
                           <i class="icon-magnifier-add"></i>
-                          <!-- </router-link> -->
+                          </router-link>
                         </li>
                       </ul>
                     </div>
