@@ -8,13 +8,22 @@ const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isAuthenticated);
 const productStore = useProductStore();
 const categories = ref([]);
-
+ 
 onMounted(async () => {
   categories.value = await productStore.fetchCategories();
+  
 });
+
+onMounted(() => {
+  authStore.checkAuth(); // ✅ app load এ cookie check করে logged-in set করবে
+});
+
 </script>
 
 <template>
+  <div>
+    {{ authStore.isAuthenticated ? "yes" : "no" }}
+  </div>
   <header class="header_wrap fixed-top header_with_topbar">
     <div class="top-header">
       <div class="container">

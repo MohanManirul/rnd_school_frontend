@@ -29,7 +29,7 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
       <div class="col-md-6">
         <ol class="breadcrumb justify-content-md-end">
           <li class="breadcrumb-item">
-            <a href="/">Home</a>
+            <router-link :to="{ name: 'home' }">Home</router-link>
           </li>
           <li class="breadcrumb-item active">This Page</li>
         </ol>
