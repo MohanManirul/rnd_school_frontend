@@ -91,7 +91,7 @@ onMounted(() => {
     <div class="bottom_header dark_skin main_menu_uppercase">
       <div class="container">
         <nav class="navbar navbar-expand-lg">
-          <a class="navbar-brand" href="index.html"> </a>
+          <a class="navbar-brand" href="index.html"> dfdf</a>
 
           <button
             class="navbar-toggler"
@@ -119,13 +119,14 @@ onMounted(() => {
                   data-bs-toggle="dropdown"
                   >Products</a
                 >
+             
                 <div class="dropdown-menu">
                   <ul>
                     <li v-for="category in categories" :key="category.id">
-                      <a
+                      <router-link 
                         class="dropdown-item nav-link nav_item"
-                        href="/ListProductByCategory/1"
-                        >{{ category.categoryName }}</a
+                        :to='`/by-category?id=${category.id}`'
+                        >{{ category.categoryName }}</router-link
                       >
                     </li>
                     <!-- Add more categories here if needed -->

@@ -72,7 +72,7 @@ watch(() => route.query.id, fetchCurrentBrand, { immediate: true });
               <img
                 :src="item.image"
                 :alt="item.title"
-              />
+              /> 
             </router-link>
 
             <div class="product_action_box">
