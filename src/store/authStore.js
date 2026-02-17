@@ -48,15 +48,13 @@ export const useAuthStore = defineStore("auth", () => {
     }
     try {
       const res = await apiClient.post(
-        `/VerifyLogin/${Useremail.value}/${otp}`,
-        {},
-        { withCredentials: true } // ✅ important for cookie
-      );
-
+        `/VerifyLogin/${Useremail.value}/${otp}`);
+      console.log(res);
+      
       if (res.data.message === 200) {
         isAuthenticated.value = true; // ✅ set logged in
         cogoToast.success("Login Successful", { position: "top-right" });
-        router.push("/dashboard");
+        router.push("/");
       } else {
         cogoToast.error("Failed to verify OTP", { position: "top-right" });
       }

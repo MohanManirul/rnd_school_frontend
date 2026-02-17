@@ -91,7 +91,7 @@ onMounted(() => {
     <div class="bottom_header dark_skin main_menu_uppercase">
       <div class="container">
         <nav class="navbar navbar-expand-lg">
-          <a class="navbar-brand" href="index.html"> dfdf</a>
+          <a class="navbar-brand" href="index.html"> Logo</a>
 
           <button
             class="navbar-toggler"

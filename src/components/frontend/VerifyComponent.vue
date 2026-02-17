@@ -12,7 +12,7 @@ const verifyLogin = async() =>{
           {
             position: "top-right"
           }
-        );
+        ); 
         return ;
     } 
     await authStore.verifyOTP(code.value) ;
