@@ -3,13 +3,14 @@ import apiClient from "@/services/apiClient";
 import { useAuthStore } from "@/store/authStore";
 import { useProductStore } from "@/store/productStore";
 import { computed, onMounted, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink , useRouter } from "vue-router";
 import axios from "axios";
-const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.isAuthenticated);
+import cogoToast from "cogo-toast";
 const productStore = useProductStore();
 const categories = ref([]);
 const isAuthenticated = ref(false);
+const Useremail = ref("");
+const router = useRouter();
  
 onMounted(async () => {
   categories.value = await productStore.fetchCategories();
@@ -21,7 +22,7 @@ onMounted(() => {
 });
 
 
-
+ 
  const checkAuth = async () => {
    
     try {
@@ -38,12 +39,31 @@ onMounted(() => {
     
     }
   };
-  
+   
+
+  const logout = async () => {
+    try {
+      const res = await apiClient.get("/UserLogout");
+      localStorage.removeItem("email");
+      isAuthenticated.value = false; // ✅ reset auth
+      Useremail.value = "";
+      cogoToast.success("Logout Successful", { position: "top-right" });
+      router.push({ name: "login" });
+      return true;
+    } catch (error) {
+      console.log(error?.message);
+      cogoToast.error(error?.message || "Logout Failed", {
+        position: "top-right"
+      });
+      return false;
+    }
+  };
+
 </script>
 
 <template>
   <div>
-    {{ authStore.isAuthenticated ? "yes" : "no" }}
+    {{ isAuthenticated ? "yes" : "no" }}
   </div>
   <header class="header_wrap fixed-top header_with_topbar">
     <div class="top-header">
@@ -83,10 +103,10 @@ onMounted(() => {
                   >
                 </li>
 
-                <li v-if="isLoggedIn">
+                <li v-if="isAuthenticated">
                   <i class="ti-user"></i>
                   <button
-                    @click="authStore.logout"
+                    @click="logout"
                     class="btn btn-sm btn-danger"
                   >
                     Logout

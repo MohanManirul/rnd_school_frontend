@@ -15,8 +15,9 @@ export const useAuthStore = defineStore("auth", () => {
   // actions
   const login = async (email) => {
     try {
-      const res = await apiClient.get(`/UserLogin/${email}`);
-
+      const res = await apiClient.get("/UserLogin");
+      console.log(res.data);
+      
       if (res.data.message === 200) {
         Useremail.value = email;
         localStorage.setItem("email", email);
@@ -32,7 +33,7 @@ export const useAuthStore = defineStore("auth", () => {
 
       return true;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       cogoToast.error(error.response?.data?.message || "Something went wrong", {
         position: "top-right"
       });
@@ -63,51 +64,13 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // ✅ checkAuth - for page refresh / app load
-  // authStore.js
-  const checkAuth = async () => {
-    loading.value = true;
-    try {
-      const res = await apiClient.get("/check-auth", { withCredentials: true });
-      if (res.data.auth) {
-        isAuthenticated.value = true;
-        Useremail.value = res.data.user.userEmail; // optional
-      } else {
-        isAuthenticated.value = false;
-        Useremail.value = "";
-      }
-    } catch (error) {
-      isAuthenticated.value = false;
-      Useremail.value = "";
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      localStorage.removeItem("email");
-      isAuthenticated.value = false; // ✅ reset auth
-      Useremail.value = "";
-      cogoToast.success("Logout Successful", { position: "top-right" });
-      router.push({ name: "login" });
-      return true;
-    } catch (error) {
-      console.log(error?.message);
-      cogoToast.error(error?.message || "Logout Failed", {
-        position: "top-right"
-      });
-      return false;
-    }
-  };
+ 
+ 
 
   return {
     Useremail,
-    isAuthenticated,
     loading,
     login,
-    verifyOTP,
-    checkAuth,
-    logout
+    verifyOTP
   };
 });
