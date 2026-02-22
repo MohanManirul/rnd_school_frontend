@@ -1,12 +1,14 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
 const apiClient = axios.create({
-  baseURL: "https://school_backend.test/api/v1",
+  baseURL: "http://127.0.0.1:8000/api/v1",
   headers: {
     "Content-Type": "application/json"
   },
   withCredentials: true
 });
+ 
+
 
 apiClient.interceptors.request.use((config) => {
 

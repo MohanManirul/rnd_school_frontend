@@ -1,13 +1,15 @@
 <script setup>
+import apiClient from "@/services/apiClient";
 import { useAuthStore } from "@/store/authStore";
 import { useProductStore } from "@/store/productStore";
 import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
-
+import axios from "axios";
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isAuthenticated);
 const productStore = useProductStore();
 const categories = ref([]);
+const isAuthenticated = ref(false);
  
 onMounted(async () => {
   categories.value = await productStore.fetchCategories();
@@ -15,9 +17,28 @@ onMounted(async () => {
 });
 
 onMounted(() => {
-  authStore.checkAuth(); // ✅ app load এ cookie check করে logged-in set করবে
+  checkAuth(); // ✅ app load এ cookie check করে logged-in set করবে
 });
 
+
+
+ const checkAuth = async () => {
+   
+    try {
+      const res = await apiClient.get("/check-auth" );
+      console.log(res.data);
+      if (res.data.auth) {
+        isAuthenticated.value = true;
+        
+      } else {
+        isAuthenticated.value = false;
+         }
+    } catch (error) {
+      isAuthenticated.value = false;
+    
+    }
+  };
+  
 </script>
 
 <template>

@@ -73,7 +73,7 @@ export const useProductStore = defineStore("productStore", () => {
     topCategoriesLoading.value = true;
     try {
       const res = await apiClient.get("/CategoryList");
-
+      
       topCategoriesItems.value = res?.data?.data ?? [];
     } catch (error) {
       // server related issue
@@ -253,12 +253,14 @@ export const useProductStore = defineStore("productStore", () => {
 
   const addToCart = async ({ product_id, color, size, qty }) => {
     try {
-      await apiClient.post("/CreateCartList", {
-        product_id,
-        color,
-        size,
-        qty
-      });
+        const res = await apiClient.post("/CreateCartList", {
+          product_id,
+          color,
+          size,
+          qty
+        });
+      console.log(res);
+      
       cogoToast.success("Product added to cart", {
         position: "top-right"
       });
