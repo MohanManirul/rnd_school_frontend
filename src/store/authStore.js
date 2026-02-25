@@ -15,7 +15,7 @@ export const useAuthStore = defineStore("auth", () => {
   // actions
   const login = async (email) => {
     try {
-      const res = await apiClient.get("/UserLogin");
+      const res = await apiClient.get(`/UserLogin/${email}`);
       console.log(res.data);
       
       if (res.data.message === 200) {
