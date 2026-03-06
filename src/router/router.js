@@ -5,6 +5,8 @@ import ProductDetailsPage from "@/pages/ProductDetailsPage.vue";
 import VerifyPage from "@/pages/VerifyPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import  ProductByBrandPage  from '@/pages/ProductByBrandPage.vue';
+import ProfilePage from "@/pages/ProfilePage.vue";
+import OrdersPage from "@/pages/OrdersPage.vue";
 
 
 
@@ -40,6 +42,16 @@ const routes = [
     path: "/details",
     component: ProductDetailsPage,
     name: "ProductDetailsPage"
+  },
+  {
+    path: "/profile",
+    component: ProfilePage,
+    name: "profile"
+  },
+  {
+    path: "/orders",
+    component: OrdersPage,
+    name: "orders"
   }
 ];
 

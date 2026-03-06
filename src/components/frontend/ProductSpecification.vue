@@ -9,8 +9,6 @@ import { useRoute } from "vue-router";
 
   onBeforeMount(async()=>{
    await store.fetchReviewsByProduct(productId);
-  //  const data = await store.fetchReviewsByProduct(productId);    
-  // console.log(data);
   });
   
   // add review

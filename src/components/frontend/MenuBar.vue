@@ -103,6 +103,12 @@ onMounted(() => {
                   >
                 </li>
 
+                <li>
+                  <RouterLink :to="{ name: 'profile' }"
+                    ><i class="ti-heart"></i><span>Account</span></RouterLink
+                  >
+                </li>
+
                 <li v-if="isAuthenticated">
                   <i class="ti-user"></i>
                   <button

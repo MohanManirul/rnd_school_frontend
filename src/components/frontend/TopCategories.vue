@@ -55,7 +55,7 @@ import { onBeforeMount } from "vue";
                      <img
                         :src="category.categoryImg"
                         :alt="category.categoryName"
-                     />
+                     /> 
                      <span>{{ category.categoryName }}</span>
                      </router-link>
                   </div>

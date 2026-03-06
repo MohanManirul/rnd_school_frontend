@@ -17,7 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const res = await apiClient.get(`/UserLogin/${email}`);
       console.log(res.data);
-      
+
       if (res.data.message === 200) {
         Useremail.value = email;
         localStorage.setItem("email", email);
@@ -49,9 +49,9 @@ export const useAuthStore = defineStore("auth", () => {
     }
     try {
       const res = await apiClient.post(
-        `/VerifyLogin/${Useremail.value}/${otp}`);
-      console.log(res);
-      
+        `/VerifyLogin/${Useremail.value}/${otp}`
+      );
+
       if (res.data.message === 200) {
         isAuthenticated.value = true; // ✅ set logged in
         cogoToast.success("Login Successful", { position: "top-right" });
@@ -64,13 +64,61 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
- 
- 
+  // ========= Profile State =========
+  const profile = ref({
+    cus_name: "",
+    cus_add: "",
+    cus_city: "",
+    cus_state: "",
+    cus_postcode: "",
+    cus_country: "",
+    cus_phone: "",
+    cus_fax: "",
+    ship_name: "",
+    ship_add: "",
+    ship_city: "",
+    ship_state: "",
+    ship_postcode: "",
+    ship_country: "",
+    ship_phone: ""
+  });
+
+    const profileLoading = ref(false);
+    const profileSaving = ref(false);
+  
+    // load profile
+    const loadProfile = async () =>{
+      profileLoading.value = true ;
+      try{
+        const res = await apiClient.get("/ReadProfile");
+        const data = res?.data?.data || null ;
+        console.log(data);
+        
+        if(data){
+          profile.value = {
+            ...profile.value ,
+            ...Object.fromEntries(
+              Object.entries(data).map(([k,v]) => [k,v ?? ""])
+            ),
+          }
+        }
+      }catch(error){
+        console.error("Error loading profile",error) ;
+        cogoToast.error("Failed to load profile.");
+      }finally{
+        profileLoading.value = false ;
+      }
+    }
 
   return {
     Useremail,
     loading,
     login,
-    verifyOTP
+    verifyOTP,
+    //profile
+    profile,
+    profileLoading,
+    profileSaving,
+    loadProfile
   };
 });
