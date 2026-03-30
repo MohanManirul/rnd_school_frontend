@@ -27,7 +27,7 @@ onMounted(() => {
    
     try {
       const res = await apiClient.get("/check-auth" );
-      console.log(res.data);
+      
       if (res.data.auth) {
         isAuthenticated.value = true;
         
@@ -51,7 +51,7 @@ onMounted(() => {
       router.push({ name: "login" });
       return true;
     } catch (error) {
-      console.log(error?.message);
+      
       cogoToast.error(error?.message || "Logout Failed", {
         position: "top-right"
       });

@@ -1,7 +1,7 @@
 <script setup>
 import { useProductStore } from "@/store/productStore";
 import { ref, computed, onBeforeMount } from "vue";
- 
+  
 
 const productStore = useProductStore();
 const activeTab = ref("Popular");

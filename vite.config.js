@@ -25,6 +25,9 @@ export default defineConfig({
       }
     }
   },
+  build:{
+    outDir:'prod',
+  }
 
 })
  

@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", () => {
   const router = useRouter();
-
+ 
   // states
   const Useremail = ref("");
   const isAuthenticated = ref(false);
@@ -16,8 +16,7 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (email) => {
     try {
       const res = await apiClient.get(`/UserLogin/${email}`);
-      console.log(res.data);
-
+      
       if (res.data.message === 200) {
         Useremail.value = email;
         localStorage.setItem("email", email);
@@ -32,8 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
       }
 
       return true;
-    } catch (error) {
-      console.log(error);
+    } catch (error) {     
       cogoToast.error(error.response?.data?.message || "Something went wrong", {
         position: "top-right"
       });
@@ -92,8 +90,7 @@ export const useAuthStore = defineStore("auth", () => {
       try{
         const res = await apiClient.get("/ReadProfile");
         const data = res?.data?.data || null ;
-        console.log(data);
-        
+                
         if(data){
           profile.value = {
             ...profile.value ,
@@ -110,6 +107,26 @@ export const useAuthStore = defineStore("auth", () => {
       }
     }
 
+    // update profile
+    const saveProfile = async() =>{
+      profileSaving.value = true ;
+      try{
+        const payload = {...profile.value} ;
+        const res = await apiClient.post("/CreateProfile",payload) ;
+        if(res?.data?.msg === "success"){
+          cogoToast.success("Profile saved successfully."); 
+        }else{
+          cogoToast.error("Failed to save profile.");
+        }
+
+      }catch(error){
+         console.error("Error saving profile", error);
+         cogoToast.error("Failed to save profile.");
+      }finally{
+        profileSaving.value = false ;
+      }
+    }
+
   return {
     Useremail,
     loading,
@@ -119,6 +136,7 @@ export const useAuthStore = defineStore("auth", () => {
     profile,
     profileLoading,
     profileSaving,
-    loadProfile
+    loadProfile,
+    saveProfile
   };
 });

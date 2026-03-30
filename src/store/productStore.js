@@ -259,13 +259,13 @@ export const useProductStore = defineStore("productStore", () => {
           size,
           qty
         });
-      console.log(res);
+      
       
       cogoToast.success("Product added to cart", {
         position: "top-right"
       });
     } catch (error) {
-      console.log(error.message);
+      
       cogoToast.error("Product not added to cart", {
         position: "top-right"
       });
