@@ -11,7 +11,7 @@ import AppLayout from '@/components/layout/AppLayout.vue';
 <template>
     <AppLayout >
         <MenuBar />
-        <ProductDetails />
+        <ProductDetails /> 
     </AppLayout>
 </template>
 

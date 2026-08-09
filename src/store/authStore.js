@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", () => {
   const router = useRouter();
- 
+  
   // states
   const Useremail = ref("");
   const isAuthenticated = ref(false);
@@ -81,58 +81,58 @@ export const useAuthStore = defineStore("auth", () => {
     ship_phone: ""
   });
 
-    const profileLoading = ref(false);
-    const profileSaving = ref(false);
-  
-    // load profile
-    const loadProfile = async () =>{
-      profileLoading.value = true ;
-      try{
-        const res = await apiClient.get("/ReadProfile");
-        const data = res?.data?.data || null ;
-                
-        if(data){
-          profile.value = {
-            ...profile.value ,
-            ...Object.fromEntries(
-              Object.entries(data).map(([k,v]) => [k,v ?? ""])
-            ),
-          }
-        }
-      }catch(error){
-        console.error("Error loading profile",error) ;
-        cogoToast.error("Failed to load profile.");
-      }finally{
-        profileLoading.value = false ;
-      }
-    }
+  const profileLoading = ref(false) ;
+  const profileSaving = ref(false) ;
 
-    // update profile
-    const saveProfile = async() =>{
-      profileSaving.value = true ;
-      try{
-        const payload = {...profile.value} ;
-        const res = await apiClient.post("/CreateProfile",payload) ;
-        if(res?.data?.msg === "success"){
-          cogoToast.success("Profile saved successfully."); 
-        }else{
-          cogoToast.error("Failed to save profile.");
+  // load prpfile
+  const loadProfile = async () =>{
+    profileLoading.value = true ;
+    try{
+      const res= await apiClient.get("ReadProfile");
+      const data = res?.data?.data || null ;
+      if(data){
+        profile.value = {
+          ...profile.value,
+          ...Object.fromEntries(
+            Object.entries(data).map(([kn,v]) => [kn,v??""])
+          )
         }
-
-      }catch(error){
-         console.error("Error saving profile", error);
-         cogoToast.error("Failed to save profile.");
-      }finally{
-        profileSaving.value = false ;
       }
+    }catch(error){
+      console.log("Error Loading profile", error) ;
+      cogoToast.error("Failed to load profile");
+    }finally{
+       profileLoading.value = false;
     }
+  }
+
+
+  // update profile
+  const saveProfile = async () =>{
+    profileSaving.value = true ;
+    try {
+      const payload = { ...profile.value };
+      const res = await apiClient.post("CreateProfile", payload);
+      if (res?.data?.msg === "success") {
+        cogoToast.success("Profile saved Successfully");
+      } else {
+        cogoToast.error("Failed to save profile");
+      }
+    } catch (error) {
+      console.log("Error Saving profile", error);
+      cogoToast.error("Failed to save profile");
+    }finally{
+      profileSaving.value = false;
+    }
+  }
 
   return {
     Useremail,
     loading,
     login,
     verifyOTP,
-    //profile
+
+    // for profile page
     profile,
     profileLoading,
     profileSaving,

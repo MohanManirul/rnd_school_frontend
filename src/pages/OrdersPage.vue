@@ -1,24 +1,26 @@
 
 <script setup>
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import AppLayout from "../components/layout/AppLayout.vue";
 import MenuBar from "../components/frontend/MenuBar.vue";
 import TopBrands from "../components/frontend/TopBrands.vue";
 import Footer from "../components/frontend/Footer.vue";
 
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "vue-router";
+import { useProductStore } from "@/store/productStore";
 const router = useRouter() ;
 
-const auth = useAuthStore();
-
-const navigateToProfile = () =>{
-    router.push('/profile') ;
-}
 
 const navigateToOrders = () =>{
-    router.push('/orders') ;
+    router.push('/orders') ;    
 }
 
+const store = useProductStore();
+
+onMounted(()=> {
+    store.loadOrders() ; 
+      
+});
 </script>
 
 <style scoped>
@@ -59,7 +61,7 @@ const navigateToOrders = () =>{
               <button
                  @click = "navigateToProfile" 
                  class="nav-link"
-                 :class="{active:$route.path ==='/profile'}"
+                
                  >
                 Profile
             </button>
@@ -95,42 +97,45 @@ const navigateToOrders = () =>{
                     <th>More</th>
                 </tr>
                 </thead>
-                <tbody>
-                <!-- Example static row -->
-                <tr>
-                    <td>1</td>
-                    <td>$ 120</td>
-                    <td>Dhaka</td>
-                    <td>Pending</td>
-                    <td>Paid</td>
-                    <td>
-                    <button class="btn btn-sm btn-outline-primary">
-                        View Products
-                    </button>
+                 <!-- Loading -->
+                <tbody v-if="store.loading">
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      <div
+                        class="spinner-border text-primary"
+                        role="status"
+                      ></div>
                     </td>
-                </tr>
+                  </tr>
+                </tbody>
 
-                <tr>
-                    <td>2</td>
-                    <td>$ 250</td>
-                    <td>Chittagong</td>
-                    <td>Delivered</td>
-                    <td>Cash</td>
-                    <td>
-                    <button class="btn btn-sm btn-outline-primary">
-                        View Products
-                    </button>
-                    </td>
-                </tr>
-
-                <!-- If no orders -->
-                <!--
-                <tr>
+                <!-- Empty -->
+                <tbody v-else-if="!store.orders.length">
+                  <tr>
                     <td colspan="6" class="text-center text-muted">
-                    No orders found
+                      No orders found
                     </td>
-                </tr>
-                -->
+                  </tr>
+                </tbody>
+
+                <tbody v-else>
+             
+                    <tr v-for="(order , i ) in store.orders" :key="order.id">
+                        <td>{{ i + 1 }}</td>
+                        <td>$ {{ order.total }}</td>
+                        <td>{{ order.ship_details || "N/A" }}</td>
+                        <td>{{ order.delivery_status }}</td>
+                        <td>{{ order.payment_status || "N/A" }}</td>
+                        <td>
+                        <button 
+                            class="btn btn-sm btn-outline-primary"
+                            @click="store.loadInvoiceProducts(order.id)"
+                            >
+                            View Products
+                        </button>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
             </div>

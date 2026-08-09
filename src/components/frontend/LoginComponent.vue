@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@/store/authStore';
 import { ref } from 'vue';
-
+ 
 const authStore = useAuthStore()
 
 const email = ref('');

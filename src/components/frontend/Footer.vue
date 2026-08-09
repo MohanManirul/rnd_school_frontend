@@ -31,21 +31,17 @@
                         <ul class="widget_links">
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Location</a></li>
-                            <li><a href="#">Affiliates</a></li>
+                            <li><a href="#">How to Buy</a></li>
                             <li><a href="#">Contact</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
                 	<div class="widget">
-                        <h6 class="widget_title">Category</h6>
+                        <h6 class="widget_title">Legals</h6>
                         <ul class="widget_links">
-                            <li><a href="#">Men</a></li>
-                            <li><a href="#">Woman</a></li>
-                            <li><a href="#">Kids</a></li>
-                            <li><a href="#">Best Saller</a></li>
-                            <li><a href="#">New Arrivals</a></li>
+                            <li><a href="#">Refund Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
                         </ul>
                     </div>
                 </div>
@@ -53,11 +49,10 @@
                 	<div class="widget">
                         <h6 class="widget_title">My Account</h6>
                         <ul class="widget_links">
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Discount</a></li>
-                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Wish List</a></li>
+                            <li><a href="#">Cart List</a></li>
                             <li><a href="#">Orders History</a></li>
-                            <li><a href="#">Order Tracking</a></li>
                         </ul>
                     </div>
                 </div>
@@ -87,7 +82,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-md-0 text-center text-md-start">© 2020 All Rights Reserved by Bestwebcreator</p>
+                    <p class="mb-md-0 text-center text-md-start">© 2026 All Rights Reserved by Bestwebcreator</p>
                 </div>
                 <div class="col-md-6">
                     <ul class="footer_payment text-center text-lg-end">

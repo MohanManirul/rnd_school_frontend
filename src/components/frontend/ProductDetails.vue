@@ -56,10 +56,10 @@ const onAddToCart = async () =>{
 
   const id = route.query.id ;
   await store.addToCart({
-    product_id : id ,
-    size      : selectedSize.value ,
-    color     : selectedColor.value ,
-    qty  : quantity.value ,
+    product_id  : id ,
+    size        : selectedSize.value ,
+    color       : selectedColor.value ,
+    qty         : quantity.value ,
   });
 
 }
@@ -121,7 +121,7 @@ const onAddToCart = async () =>{
           </div>
         </div>
       </div>
-
+ 
       <!-- Details -->
       <div class="col-lg-6 col-md-6">
         <div class="pr_detail">

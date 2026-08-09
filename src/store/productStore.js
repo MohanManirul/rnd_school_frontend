@@ -1,7 +1,7 @@
 import apiClient from "@/services/apiClient";
 import cogoToast from "cogo-toast";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
 export const useProductStore = defineStore("productStore", () => {
@@ -40,19 +40,15 @@ export const useProductStore = defineStore("productStore", () => {
   const brandLoading = ref(false);
   const brandError = ref(false);
 
-  // states for single product
-  const productDetails = ref(null);
-  const productImages = ref([]);
-  const productSizes = ref([]);
-  const productColors = ref([]);
-  const detailsLoading = ref(false);
-  const detailsError = ref(false);
-
   //states for reviews
   const reviews = ref([]);
   const reviewsLoading = ref(false);
   const reviewsError = ref("");
 
+  // orders
+  const orders = ref([]);
+  const ordersLoading = ref(false);
+  const orderError = ref("");
   //actions
   const fetchCategories = async () => {
     try {
@@ -73,7 +69,7 @@ export const useProductStore = defineStore("productStore", () => {
     topCategoriesLoading.value = true;
     try {
       const res = await apiClient.get("/CategoryList");
-      
+
       topCategoriesItems.value = res?.data?.data ?? [];
     } catch (error) {
       // server related issue
@@ -149,6 +145,7 @@ export const useProductStore = defineStore("productStore", () => {
     await fetchProductsByRemark(tabName);
   };
 
+  // Fetch Sliders
   const fetchSlider = async () => {
     sliderLoading.value = true;
     try {
@@ -171,7 +168,7 @@ export const useProductStore = defineStore("productStore", () => {
     try {
       const categoryRes = await apiClient.get("CategoryList");
       const categories = categoryRes?.data?.data ?? [];
-      const found = categories.find((c) => c.id == categoryId);
+      const found = categories.find((c) => c.id == categoryId); // এই লাইনটা JavaScript array থেকে নির্দিষ্ট category খুঁজে বের করছে। Array থেকে প্রথম matching item return করে।
       categoryName.value = found?.categoryName || "";
       const res = await apiClient.get(`ListProductByCategory/${categoryId}`);
 
@@ -206,12 +203,12 @@ export const useProductStore = defineStore("productStore", () => {
     }
   };
 
-  // const productDetails = ref(null);
-  // const productImages = ref([]);
-  // const productSizes = ref([]);
-  // const productColors = ref([]);
-  // const detailsLoading = ref(false);
-  // const detailsError = ref(false);
+  const productDetails = ref(null);
+  const productImages = ref([]);
+  const productSizes = ref([]);
+  const productColors = ref([]);
+  const detailsLoading = ref(false);
+  const detailsError = ref(false);
 
   // fetch single product details by id
   const fetchProductDetailsById = async (id) => {
@@ -253,19 +250,17 @@ export const useProductStore = defineStore("productStore", () => {
 
   const addToCart = async ({ product_id, color, size, qty }) => {
     try {
-        const res = await apiClient.post("/CreateCartList", {
-          product_id,
-          color,
-          size,
-          qty
-        });
-      
-      
+      const res = await apiClient.post("/CreateCartList", {
+        product_id,
+        color,
+        size,
+        qty
+      });
+
       cogoToast.success("Product added to cart", {
         position: "top-right"
       });
     } catch (error) {
-      
       cogoToast.error("Product not added to cart", {
         position: "top-right"
       });
@@ -314,6 +309,103 @@ export const useProductStore = defineStore("productStore", () => {
       }
     }
   };
+
+  // GET /OrderListRequest
+
+  const loadOrders = async () => {
+    ordersLoading.value = true;
+
+    try {
+      const res = await apiClient.get("/InvoiceList");
+      orders.value = Array.isArray(res?.data) ? res.data : [];
+    } catch (e) {
+      console.error("Error loading orders.", e);
+      orderError.value = "Failed to load orders.";
+      cogoToast.error(orderError.value);
+      orders.value = [];
+    } finally {
+      ordersLoading.value = false;
+    }
+  };
+
+
+
+   // Cart States
+  const cartItems = ref([]);
+  const cartLoading = ref(false);
+  const cartError = ref("");
+  
+    // GET /CartList
+  const fetchCart = async () => {
+    cartLoading.value = true;
+
+    try {
+      const res = await apiClient.get("/CartList");
+      if (res?.data?.status === "unauthorized" || res?.status === 401) {
+        cartItems.value = [];
+        return;
+      }
+      cartItems.value = res?.data?.data || [];
+    } catch (err) {
+      cartError.value = "Failed to load cart.";
+      cogoToast.error("Failed to load cart.");
+
+      cartItems.value = [];
+    } finally {
+      cartLoading.value = false;
+    }
+  };
+
+
+  // update cart price with qty
+    const updateCartQuantity = async (productId, qty) => {
+      try {
+        await apiClient.post("/CartUpdate", {
+          product_id: productId,
+          qty: qty
+        });
+      } catch (error) {
+        console.error("Failed to update cart quantity:", error);
+
+        // API fail করলে server-এর actual data reload করবে
+        await fetchCart();
+
+        cogoToast.error("Failed to update cart quantity.");
+      }
+    };
+
+  // GET /DeleteCartList/{product_id}
+  const removeFromCart = async (productId) => {
+    if (!productId) return;
+    const prev = [...cartItems.value];
+    // optimistic UI
+    cartItems.value = cartItems.value.filter(
+      (it) => it.product_id !== productId
+    );
+    try {
+      const res = await apiClient.get(`/DeleteCartList/${productId}`);
+      if (res?.data?.status === "unauthorized" || res?.status === 401) {
+        cartItems.value = prev;
+
+        return;
+      }
+      // if (res.status !== 200) throw new Error("Delete failed");
+      cogoToast.success("Removed from cart.");
+    } catch (err) {
+      cartItems.value = prev;
+
+      console.error("Failed to remove cart item:", err);
+      cogoToast.error("Failed to remove. Please try again.");
+    }
+  };
+
+  // Total derived from cartItems
+
+  const cartTotal = computed(() => {
+    return cartItems.value.reduce((total, row) => {
+      return total + Number(row.price) * Number(row.qty);
+    }, 0);
+  });
 
   return {
     fetchCategories,
@@ -375,6 +467,22 @@ export const useProductStore = defineStore("productStore", () => {
     fetchReviewsByProduct,
 
     // create review
-    createReview
+    createReview,
+    // load Orders
+    loadOrders,
+    orders,
+    ordersLoading,
+    orderError,
+
+    // CART
+    cartItems,
+    cartLoading,
+    cartError,
+    cartTotal,
+    fetchCart,
+    removeFromCart,
+
+    // update cart
+    updateCartQuantity
   };
 });

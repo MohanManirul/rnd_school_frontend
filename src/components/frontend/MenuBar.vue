@@ -104,7 +104,7 @@ onMounted(() => {
                 </li>
 
                 <li>
-                  <RouterLink :to="{ name: 'profile' }"
+                  <RouterLink :to="{name:'profile'}"
                     ><i class="ti-heart"></i><span>Account</span></RouterLink
                   >
                 </li>
@@ -118,7 +118,7 @@ onMounted(() => {
                     Logout
                   </button>
                 </li>
-
+ 
                 <li v-else>
                   <RouterLink :to="{ name: 'login' }"
                     ><i class="ti-user"></i
@@ -181,7 +181,7 @@ onMounted(() => {
                 </div>
               </li>
               <li>
-                <a href="cart.html" class="nav-link">Cart</a>
+                <router-link  :to="{name:'cart'}" class="nav-link">Cart</router-link>
               </li>
             </ul>
           </div>
@@ -251,10 +251,10 @@ onMounted(() => {
                     >159.00
                   </p>
                   <p class="cart_buttons">
-                    <a
-                      href="cart.html"
+                    <router-link
+                      :to="{name:'cart'}"
                       class="btn btn-fill-line rounded-0 view-cart"
-                      >View Cart</a
+                      >View Cart</router-link
                     >
                     <a href="#" class="btn btn-fill-out rounded-0 checkout"
                       >Checkout</a

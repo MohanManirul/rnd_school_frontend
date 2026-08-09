@@ -5,10 +5,8 @@ import ProductDetailsPage from "@/pages/ProductDetailsPage.vue";
 import VerifyPage from "@/pages/VerifyPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import  ProductByBrandPage  from '@/pages/ProductByBrandPage.vue';
-import ProfilePage from "@/pages/ProfilePage.vue";
-import OrdersPage from "@/pages/OrdersPage.vue";
-
-
+import  ProfilePage  from '@/pages/ProfilePage.vue';
+import  CartPage  from '@/pages/CartPage.vue';
 
 
 const routes = [
@@ -49,9 +47,9 @@ const routes = [
     name: "profile"
   },
   {
-    path: "/orders",
-    component: OrdersPage,
-    name: "orders"
+    path: "/cart",
+    component: CartPage,
+    name: "cart"
   }
 ];
 

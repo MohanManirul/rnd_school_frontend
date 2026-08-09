@@ -5,7 +5,7 @@ import MenuBar from '@/components/frontend/MenuBar.vue';
 
 </script>
 
-
+ 
 
 <template>
 

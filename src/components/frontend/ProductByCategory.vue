@@ -12,6 +12,10 @@ const fetchCurrentCategory = async () =>{
 }
 
 watch(() => route.query.id, fetchCurrentCategory, { immediate: true })
+
+// route.query.id observe করো; page load বা id change হলেই category data fetch করো।
+// { immediate: true } দিলে component load হওয়ার সাথে সাথেও একবার run করবে।
+
 // nicer etaw kora zeto 
 // onBeforeMount(async () => {
 //   await fetchCurrentCategory();
